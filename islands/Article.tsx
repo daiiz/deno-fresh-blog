@@ -11,8 +11,10 @@ interface ArticleProps {
 
 const articleStyle = [
   "article a.link { color: rgb(59 130 246); }",
-  "article .imgs { display: flex; justify-content: center; gap: 12px; margin: 24px 0; }",
-  "article img { max-height: 400px; border-radius: 2px; min-width: 0; }", // TODO: 縦長・横長で個別対応
+  "article figure { margin: 24px 0; }",
+  "article figure .imgs, figcaption { display: flex; justify-content: center; gap: 12px; }",
+  "article figure figcaption { color: rgb(55 65 81); margin-top: 4px; }",
+  "article img { max-height: 400px; max-width: 100%; border-radius: 2px; min-width: 0; }", // TODO: 縦長・横長で個別対応
 ].join("");
 
 export default function Article(props: ArticleProps) {

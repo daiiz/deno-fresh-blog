@@ -7,8 +7,8 @@ import Article from "../../islands/Article.tsx";
 const paragraphs = [
   "1億年ぶりに<a class='link' href='#'>ブログ</a>を作っていくよ。朝マックを食べるために早起きするのは果たして健康的と言えるのか。出町柳商店街の七夕祭りに来た。いいこと思いついたと同時に頭痛もやってきた。ここのところVS Codeがめっちゃメモリを食っている。",
   "2億年ぶりに<a class='link' href='#'>ブログ</a>を作っていくよ。",
-  "<div class='imgs'><img src='https://gyazo.com/afce18ec154efb29963b525aa9beac2c/raw' /><img src='https://gyazo.com/afce18ec154efb29963b525aa9beac2c/raw' /></div>",
-  "DenoのWebフレームワーク「Fresh」を使ってみるよ！",
+  "<figure><div class='imgs'><img src='https://gyazo.com/afce18ec154efb29963b525aa9beac2c/raw' /><img src='https://gyazo.com/afce18ec154efb29963b525aa9beac2c/raw' /></div><figcaption>ダブル 抹茶 ティー ラテ ダブル</figcaption></figure>",
+  "DenoのWebフレームワーク「Fresh」を使ってみているよ！",
 ];
 
 export default function Greet(props: PageProps) {
