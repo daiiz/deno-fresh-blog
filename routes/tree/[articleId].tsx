@@ -18,6 +18,7 @@ export default function Greet(props: PageProps) {
   const { articleId } = props.params;
   return (
     <div data-article-id={articleId}>
+      <title>daiiz fresh blog</title>
       <header></header>
       <main class={tw`p-4 mx-auto max-w-screen-md`}>
         <h1 class={tw`text-3xl my-8 mt-10`}>daiiz fresh blog</h1>
