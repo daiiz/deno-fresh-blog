@@ -16,6 +16,9 @@ export default function Home() {
         file, and refresh.
       </p>
       <Counter start={3} />
+      <a href="./articles/example" class={tw`text-blue-500`}>
+        Go to example article
+      </a>
     </div>
   );
 }
