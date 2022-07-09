@@ -5,7 +5,8 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { tw } from "@twind";
 
 interface ArticleProps {
-  title: string;
+  // title: string;
+  updates: string;
   paragraphs: string[];
 }
 
@@ -21,10 +22,10 @@ const articleStyle = [
 export default function Article(props: ArticleProps) {
   return (
     <div class="article">
-      <title>{props.title}</title>
+      {/* <title>{props.title}</title> */}
       <style dangerouslySetInnerHTML={{ __html: articleStyle }} />
-      <article class={tw`w-full font-sans`}>
-        <h1 class={tw`text-2xl my-8 mt-10`}>{props.title}</h1>
+      <article class={tw`w-full font-sans my-8`}>
+        {/* <h1 class={tw`text-2xl my-8 mt-10`}>{props.title}</h1> */}
         {props.paragraphs.map((paragraph) => {
           return (
             <section
@@ -38,7 +39,7 @@ export default function Article(props: ArticleProps) {
         <table class={tw`font-mono`}>
           <tr>
             <td>
-              <a href="../updates/2022/07/09">2022-07-10 02:10</a>
+              <a href="../updates/2022/07/09">{props.updates}</a>
             </td>
             <td class={tw`pl-4`}>
               <img
