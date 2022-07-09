@@ -10,11 +10,11 @@ interface ArticleProps {
 }
 
 export default function Article(props: ArticleProps) {
-  console.log(props);
   return (
-    <div>
-      <h1>{props.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: props.contentHtml }} />
-    </div>
+    <article class={tw`w-full font-sans`}>
+      <h1 class={tw`text-2xl my-8 mt-10`}>{props.title}</h1>
+      <div class={tw`text-right text-gray-500`}>2022-07-10 日</div>
+      <section dangerouslySetInnerHTML={{ __html: props.contentHtml }} />
+    </article>
   );
 }
