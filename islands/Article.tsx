@@ -35,8 +35,8 @@ export default function Article(props: ArticleProps) {
           );
         })}
       </article>
-      <div class={tw`flex justify-end text-sm text-gray-500 mt-6`}>
-        <table class={tw`font-mono`}>
+      <div class={tw`flex justify-end text-sm text-gray-500 mt-1`}>
+        <table>
           <tr>
             <td>
               <a href="../updates/2022/07/09">{props.updates}</a>
@@ -50,19 +50,6 @@ export default function Article(props: ArticleProps) {
               <a href="../authors/だいず">daiiz</a>
             </td>
           </tr>
-          {/* <tr>
-            <td>
-              <a href="../updates/2022/07/09">2022-07-09 23:00</a>
-            </td>
-            <td class={tw`pl-4`}>
-              <img
-                class={tw`inline-block align-sub mr-1`}
-                src="https://gyazo.com/9a0da4f2757af9fe1cf7bd324237a968/raw"
-                style={{ width: 18 }}
-              />
-              <a href="../authors/Daiki%20Iizuka">Daiki Iizuka</a>
-            </td>
-          </tr> */}
         </table>
       </div>
     </div>
