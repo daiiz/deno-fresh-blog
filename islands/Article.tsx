@@ -15,6 +15,7 @@ const articleStyle = [
   "article figure .imgs, figcaption { display: flex; justify-content: center; gap: 12px; }",
   "article figure figcaption { color: rgb(55 65 81); margin-top: 4px; }",
   "article .imgs img { max-height: 400px; max-width: 100%; border-radius: 2px; min-width: 0; opacity: 0.95; background: rgba(84, 80, 78, 0.05); }", // TODO: 縦長・横長で個別対応
+  "article ul li { list-style: initial; margin-left: 18px; }",
 ].join("");
 
 export default function Article(props: ArticleProps) {
