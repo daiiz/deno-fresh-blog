@@ -33,7 +33,7 @@ export default function Article(props: ArticleProps) {
           );
         })}
       </article>
-      <div class={tw`flex justify-end text-sm text-gray-600 mt-6`}>
+      <div class={tw`flex justify-end text-sm text-gray-500 mt-6`}>
         <table class={tw`font-mono`}>
           <tr>
             <td>
@@ -48,7 +48,7 @@ export default function Article(props: ArticleProps) {
               <a href="../authors/だいず">daiiz</a>
             </td>
           </tr>
-          <tr>
+          {/* <tr>
             <td>
               <a href="../updates/2022/07/09">2022-07-09 23:00</a>
             </td>
@@ -60,7 +60,7 @@ export default function Article(props: ArticleProps) {
               />
               <a href="../authors/Daiki%20Iizuka">Daiki Iizuka</a>
             </td>
-          </tr>
+          </tr> */}
         </table>
       </div>
     </div>
