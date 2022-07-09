@@ -21,7 +21,10 @@ export default function Article(props: ArticleProps) {
           </tr>
         </table>
       </div>
-      <section dangerouslySetInnerHTML={{ __html: props.contentHtml }} />
+      <section
+        class={tw`text-base leading-relaxed`}
+        dangerouslySetInnerHTML={{ __html: props.contentHtml }}
+      />
     </article>
   );
 }
