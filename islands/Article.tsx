@@ -6,13 +6,20 @@ import { tw } from "@twind";
 
 interface ArticleProps {
   title: string;
-  contentHtml: string;
+  paragraphs: string[];
 }
+
+const articleStyle = [
+  "article a.link { color: rgb(59 130 246); }",
+  "article .imgs { display: flex; justify-content: center; gap: 12px; margin: 24px 0; }",
+  "article img { max-height: 400px; border-radius: 2px; min-width: 0; }", // TODO: 縦長・横長で個別対応
+].join("");
 
 export default function Article(props: ArticleProps) {
   return (
     <div class="article">
       <title>{props.title}</title>
+      <style dangerouslySetInnerHTML={{ __html: articleStyle }} />
       <article class={tw`w-full font-sans`}>
         <h1 class={tw`text-2xl my-8 mt-10`}>{props.title}</h1>
         <div class={tw`text-gray-500 mb-4`}>
@@ -27,10 +34,14 @@ export default function Article(props: ArticleProps) {
             </tr>
           </table>
         </div>
-        <section
-          class={tw`text-base leading-relaxed`}
-          dangerouslySetInnerHTML={{ __html: props.contentHtml }}
-        />
+        {props.paragraphs.map((paragraph) => {
+          return (
+            <section
+              class={tw`text-base leading-relaxed my-2`}
+              dangerouslySetInnerHTML={{ __html: "<p>" + paragraph + "</p>" }}
+            />
+          );
+        })}
       </article>
     </div>
   );
