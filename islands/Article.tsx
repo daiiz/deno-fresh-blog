@@ -13,7 +13,14 @@ export default function Article(props: ArticleProps) {
   return (
     <article class={tw`w-full font-sans`}>
       <h1 class={tw`text-2xl my-8 mt-10`}>{props.title}</h1>
-      <div class={tw`text-right text-gray-500`}>2022-07-10 日</div>
+      <div class={tw`text-gray-500 mb-4`}>
+        <table class={tw`flex justify-end text-sm`}>
+          <tr>
+            <td>2022-07-09 23:00</td>
+            <td class={tw`pl-4`}>だいず</td>
+          </tr>
+        </table>
+      </div>
       <section dangerouslySetInnerHTML={{ __html: props.contentHtml }} />
     </article>
   );
