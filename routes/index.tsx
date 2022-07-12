@@ -21,16 +21,6 @@ export default function Home() {
       <h2 class={tw`text-xl mb-4`}>New notes</h2>
       <RecentArticles />
       <ul>
-        <LiItem
-          title="denoland/fresh"
-          url="./docs/deno-fresh"
-          date="2022/7/10 16:01"
-        />
-        <LiItem
-          title="denoland/fresh"
-          url="./docs/deno-fresh"
-          date="2022/7/9 11:01"
-        />
         <LiItem title="入門GUI" url="./docs/guibook" date="2020/10/3 15:00" />
       </ul>
       <h2 class={tw`text-xl mb-4 mt-6`}>Sample notes</h2>
