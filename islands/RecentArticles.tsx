@@ -27,7 +27,6 @@ export default function RecentArtices() {
     const fetchData = async () => {
       const res = await fetch("/api/articles");
       const data = await res.json();
-      console.log(data);
       setArticles(data.articles);
     };
     fetchData();

@@ -1,9 +1,6 @@
 import { HandlerContext } from "$fresh/server.ts";
 import { findRecentArticles } from "../../utils/db.ts";
 
-// 環境変数
-const gcsBucketName = Deno.env.get("GCS_BUCKET_NAME");
-
 export const handler = async (
   _req: Request,
   _ctx: HandlerContext
@@ -28,7 +25,7 @@ export const handler = async (
     res.articles.push({
       key,
       title: a.title,
-      name: `${gcsBucketName}/${a.gcsObjectName}`,
+      name: a.gcsObjectName,
       publishedAt: a.publishedAt,
     });
     bookKeySet.add(key);

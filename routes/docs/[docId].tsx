@@ -4,6 +4,8 @@ import { tw } from "@twind";
 import { PageProps } from "$fresh/server.ts";
 import PdfDoc from "../../islands/PdfDoc.tsx";
 
+const bucketName = Deno.env.get("GCS_BUCKET_NAME");
+
 export default function DocPage(props: PageProps) {
   const { docId } = props.params;
   let pdfUrl = "";
@@ -19,7 +21,7 @@ export default function DocPage(props: PageProps) {
     title = decodeURIComponent(docId);
     const params = new URLSearchParams(props.url.search.replace(/^\?/, ""));
     const name = params.get("o");
-    pdfUrl = `https://storage.googleapis.com/${name}`;
+    pdfUrl = `https://storage.googleapis.com/${bucketName}/${name}`;
   }
   let url = `/api/pdf?url=${pdfUrl}`;
   if (docId === "sample") {
