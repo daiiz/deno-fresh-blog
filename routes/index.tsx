@@ -16,7 +16,7 @@ export default function Home() {
         >
           Pimento Cloud
         </a>{" "}
-        で作った資料置き場
+        で作ったメモ置き場
       </div>
       <h2 class={tw`text-xl mb-4`}>New notes</h2>
       <RecentArticles />
