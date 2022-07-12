@@ -28,8 +28,6 @@ const connectMongo = async () => {
 };
 
 export const findRecentArticles = async () => {
-  // if (!pimentoBlogPages) return;
-
   const cursor = pimentoBlogPages.find({});
   cursor.sort({ publishedAt: -1 }).limit(10);
 
