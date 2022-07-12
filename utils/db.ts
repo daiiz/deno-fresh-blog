@@ -2,7 +2,7 @@
 import { MongoClient } from "mongo";
 import "dotenv/load.ts";
 
-// XXX: そのうち切り出す
+// TODO: 切り出す
 interface PimentoBlogPageSchema {
   gcsObjectName: string;
   title: string;
