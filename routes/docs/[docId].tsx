@@ -15,6 +15,11 @@ export default function DocPage(props: PageProps) {
     title = "入門GUI";
     pdfUrl =
       "https://daiiz-paprika.appspot.com/doc/2348d6fd4c5f98e04208cc2374bff8b2";
+  } else {
+    title = decodeURIComponent(docId);
+    const params = new URLSearchParams(props.url.search.replace(/^\?/, ""));
+    const name = params.get("o");
+    pdfUrl = `https://storage.googleapis.com/${name}`;
   }
   let url = `/api/pdf?url=${pdfUrl}`;
   if (docId === "sample") {
@@ -23,7 +28,7 @@ export default function DocPage(props: PageProps) {
   }
   return (
     <div data-doc-id={docId} class={tw`flex flex-col h-screen`}>
-      <title>{docId}</title>
+      <title>{title}</title>
       <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
       <div class={tw`px-2 py-1 text-sm`} style={{ backgroundColor: "#f9f9fa" }}>
         <a href="/" class={tw`text-blue-600`}>

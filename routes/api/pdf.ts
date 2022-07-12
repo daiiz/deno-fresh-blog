@@ -9,7 +9,7 @@ export const handler = async (
   if (!url) {
     return new Response("Bad Request", { status: 400 });
   }
-  const res = await fetch(url, { method: "GET" });
+  const res = await fetch(url, { method: "GET", redirect: "follow" });
   if (!res.ok || res.headers.get("content-type") !== "application/pdf") {
     return new Response("Invalid file type", { status: 400 });
   }
