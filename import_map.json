@@ -6,6 +6,7 @@
     "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.2.0?deps=preact@10.8.2",
     "@twind": "./utils/twind.ts",
     "@db": "./utils/db.ts",
+    "mongo": "https://deno.land/x/mongo@v0.30.1/mod.ts",
     "twind": "https://esm.sh/twind@0.16.17",
     "twind/": "https://esm.sh/twind@0.16.17/",
     "dotenv/": "https://deno.land/x/dotenv@v3.2.0/"
