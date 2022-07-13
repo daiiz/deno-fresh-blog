@@ -2,24 +2,33 @@
 import "dotenv/load.ts";
 import { h } from "preact";
 import { tw } from "@twind";
+import { findLatestArticle } from "@db";
 import { PageProps } from "$fresh/server.ts";
 import PdfDoc from "../../islands/PdfDoc.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
+export const handler = {
+  async GET(_, ctx) {
+    const { docId } = ctx.params;
+    const docTitle = decodeURIComponent(docId);
+    const article = await findLatestArticle(docTitle);
+    const objectName = article ? article.gcsObjectName : "";
+    return ctx.render(Object.assign({}, ctx.params, { objectName, docTitle }));
+  },
+};
+
 export default function DocPage(props: PageProps) {
-  const { docId } = props.params;
+  const { docId, docTitle, objectName } = props.data;
   let pdfUrl = "";
   let title = "denoland/fresh";
   if (docId === "guibook") {
     title = "入門GUI";
     pdfUrl =
       "https://daiiz-paprika.appspot.com/doc/2348d6fd4c5f98e04208cc2374bff8b2";
-  } else {
-    title = decodeURIComponent(docId);
-    const params = new URLSearchParams(props.url.search.replace(/^\?/, ""));
-    const name = params.get("o");
-    pdfUrl = `https://storage.googleapis.com/${bucketName}/${name}`;
+  } else if (objectName) {
+    title = docTitle;
+    pdfUrl = `https://storage.googleapis.com/${bucketName}/${objectName}`;
   }
   let url = `/api/pdf?url=${pdfUrl}`;
   if (docId === "sample") {

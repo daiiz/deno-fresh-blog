@@ -28,11 +28,25 @@ const connectMongo = async () => {
 };
 
 export const findRecentArticles = async () => {
+  if (!pimentoBlogPages) {
+    return [];
+  }
   const cursor = pimentoBlogPages.find({});
   cursor.sort({ publishedAt: -1 }).limit(10);
 
   const articles = await cursor.toArray();
   return articles;
+};
+
+export const findLatestArticle = async (title: string) => {
+  if (!pimentoBlogPages) {
+    return null;
+  }
+  const article = await pimentoBlogPages.findOne(
+    { title },
+    { sort: { publishedAt: -1 } }
+  );
+  return article;
 };
 
 connectMongo();

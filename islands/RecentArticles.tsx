@@ -35,7 +35,7 @@ export default function RecentArtices() {
   return (
     <ul>
       {articles.map((x) => {
-        const url = `./docs/${encodeURIComponent(x.title)}?o=${x.name}`;
+        const url = `./docs/${encodeURIComponent(x.title)}`; //?o=${x.name}`;
         const date = new Date(x.publishedAt)
           .toLocaleString()
           .replace(/:\d+$/, "");

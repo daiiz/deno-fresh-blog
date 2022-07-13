@@ -1,5 +1,5 @@
 import { HandlerContext } from "$fresh/server.ts";
-import { findRecentArticles } from "../../utils/db.ts";
+import { findRecentArticles } from "@db";
 
 export const handler = async (
   _req: Request,
