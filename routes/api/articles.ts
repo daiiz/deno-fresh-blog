@@ -1,5 +1,5 @@
 import { HandlerContext } from "$fresh/server.ts";
-import { findRecentArticles } from "../../utils/db.ts";
+import { findRecentArticles } from "@db";
 
 export const handler = async (
   _req: Request,
@@ -18,7 +18,7 @@ export const handler = async (
   // bookKeyが重複する場合は最新のものを返す
   const bookKeySet = new Set<string>();
   for (const a of articles) {
-    const key = a.bookKey || `${a.projectName}/${a.bookId}`;
+    const key = a.title || a.bookKey || `${a.projectName}/${a.bookId}`;
     if (bookKeySet.has(key)) {
       continue;
     }

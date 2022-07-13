@@ -15,7 +15,7 @@ export const LiItem = ({ title, url, date }: LiItemProps) => {
       <a href={url} class={tw`text-blue-500`}>
         {title || "Untitled"}
       </a>
-      <div class={tw`text-sm text-gray-800 inline-block ml-4`}>{date}</div>
+      {/* <div class={tw`text-sm text-gray-800 inline-block ml-4`}>{date}</div> */}
     </li>
   );
 };
@@ -35,7 +35,7 @@ export default function RecentArtices() {
   return (
     <ul>
       {articles.map((x) => {
-        const url = `./docs/${encodeURIComponent(x.title)}?o=${x.name}`;
+        const url = `./docs/${encodeURIComponent(x.title)}`;
         const date = new Date(x.publishedAt)
           .toLocaleString()
           .replace(/:\d+$/, "");
