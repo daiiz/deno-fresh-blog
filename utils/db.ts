@@ -1,6 +1,6 @@
+import "dotenv/load.ts";
 // https://deno.land/x/mongo@v0.30.1
 import { MongoClient } from "mongo";
-import "dotenv/load.ts";
 
 // TODO: 切り出す
 interface PimentoBlogPageSchema {

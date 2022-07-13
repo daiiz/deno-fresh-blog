@@ -6,8 +6,8 @@ import RecentArticles, { LiItem } from "../islands/RecentArticles.tsx";
 export default function Home() {
   return (
     <div class={tw`p-4 mx-auto max-w-screen-md`}>
-      <title>_φ(･_･</title>
-      <h1 class={tw`text-2xl mt-10`}>_φ(･_･</h1>
+      <title>だいず書庫</title>
+      <h1 class={tw`text-2xl mt-10`}>だいず書庫</h1>
       <div class={tw`text-sm text-gray-600 mb-8 mt-1`}>
         <a
           target="_blank"

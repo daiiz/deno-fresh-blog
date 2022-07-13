@@ -1,4 +1,5 @@
 /** @jsx h */
+import "dotenv/load.ts";
 import { h } from "preact";
 import { tw } from "@twind";
 import { PageProps } from "$fresh/server.ts";
@@ -10,10 +11,7 @@ export default function DocPage(props: PageProps) {
   const { docId } = props.params;
   let pdfUrl = "";
   let title = "denoland/fresh";
-  if (docId === "deno-fresh") {
-    pdfUrl =
-      "https://daiiz-paprika.appspot.com/doc/bfda88899aa391a074eac024326e9d97";
-  } else if (docId === "guibook") {
+  if (docId === "guibook") {
     title = "入門GUI";
     pdfUrl =
       "https://daiiz-paprika.appspot.com/doc/2348d6fd4c5f98e04208cc2374bff8b2";
