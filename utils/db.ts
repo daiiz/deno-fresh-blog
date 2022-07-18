@@ -32,7 +32,7 @@ export const findRecentArticles = async () => {
     return [];
   }
   const cursor = pimentoBlogPages.find({});
-  cursor.sort({ publishedAt: -1 }).limit(10);
+  cursor.sort({ publishedAt: -1 }).limit(100);
 
   const articles = await cursor.toArray();
   return articles;
