@@ -15,7 +15,6 @@ export const LiItem = ({ title, url, date }: LiItemProps) => {
       <a href={url} class={tw`text-blue-500`}>
         {title || "Untitled"}
       </a>
-      {/* <div class={tw`text-sm text-gray-800 inline-block ml-4`}>{date}</div> */}
     </li>
   );
 };
