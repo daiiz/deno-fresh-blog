@@ -57,7 +57,12 @@ export default function DocPage(props: PageProps) {
             text
           </a>
           <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-          json
+          <a
+            href={`/docs/json/${encodeURIComponent(title)}`}
+            class={tw`text-blue-600`}
+          >
+            json
+          </a>
         </div>
       </div>
       <div style={{ flexGrow: 1 }}>
