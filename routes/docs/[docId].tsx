@@ -40,16 +40,16 @@ export default function DocPage(props: PageProps) {
       <title>{title}</title>
       <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
       <div
-        class={tw`flex flex-row`}
+        class={tw`flex flex-row px-2 pt-1 pb-2`}
         style={{ backgroundColor: "#f9f9fa", justifyContent: "space-between" }}
       >
-        <div class={tw`px-2 py-1 text-sm`}>
+        <div class={tw`text-sm`}>
           <a href="/" class={tw`text-blue-600`}>
             New notes
           </a>{" "}
           › {title}
         </div>
-        <div class={tw`px-4 py-1 text-sm`}>
+        <div class={tw`px-2 text-sm`}>
           <a
             href={`/docs/text/${encodeURIComponent(title)}`}
             class={tw`text-blue-600`}
