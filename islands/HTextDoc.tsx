@@ -106,7 +106,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       // リンクっぽいブラケティングを解析する
       const linkLikeRes = parseLinkLikeBracketing(subStr);
       if (linkLikeRes.imageUrl) {
-        charElems.push(
+        const imageElem = (
           <span class="image-container">
             <img loading="lazy" class="image" src={linkLikeRes.imageUrl} />
             <span class="image-notation nopre">
@@ -114,6 +114,20 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
             </span>
           </span>
         );
+        if (linkLikeRes.url) {
+          charElems.push(
+            <a
+              href={linkLikeRes.url}
+              class="anchor-image-container"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {imageElem}
+            </a>
+          );
+        } else {
+          charElems.push(imageElem);
+        }
         idx += subStr.length - 1;
         continue;
       }

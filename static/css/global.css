@@ -74,6 +74,10 @@
   margin-right: 4px;
 }
 
+.anchor-image-container .image-container {
+  border-bottom: 1px solid #99c;
+}
+
 .image-container {
   position: relative;
   display: inline-block;
