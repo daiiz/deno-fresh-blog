@@ -82,7 +82,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
   return (
     <div>
       <div class={classNames.join(" ")}>
-        <div class="indent">{tabCharElems}</div>
+        {tabCharElems.length ? <div class="indent">{tabCharElems}</div> : ""}
         <div class={contentClassNames.join(" ")} style={contentStyle}>
           {charElems.length > 0 ? charElems : <br />}
         </div>
