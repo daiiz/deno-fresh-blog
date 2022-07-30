@@ -12,7 +12,7 @@ interface LiItemProps {
 export const LiItem = ({ title, url, date }: LiItemProps) => {
   return (
     <li>
-      <a href={url} class={tw`text-blue-500`}>
+      <a href={url} class="doc-link doc-link-underline">
         {title || "Untitled"}
       </a>
     </li>
