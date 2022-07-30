@@ -23,13 +23,12 @@ let pimentoBlogPages = null;
 const connectMongo = async () => {
   await client.connect(myMongoUri);
   const db = client.database(dbName);
-
   pimentoBlogPages = db.collection<PimentoBlogPageSchema>("pimentoblogpages");
 };
 
 export const findRecentArticles = async () => {
   if (!pimentoBlogPages) {
-    return [];
+    await connectMongo();
   }
   const cursor = pimentoBlogPages.find({});
   cursor.sort({ publishedAt: -1 }).limit(50);
@@ -40,7 +39,7 @@ export const findRecentArticles = async () => {
 
 export const findLatestArticle = async (title: string) => {
   if (!pimentoBlogPages) {
-    return null;
+    await connectMongo();
   }
   const article = await pimentoBlogPages.findOne(
     { title },
