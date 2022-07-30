@@ -14,3 +14,22 @@
   min-height: 1.1em;
   font-family: "Roboto", Helvetica, Arial, "Hiragino Sans", sans-serif;
 }
+
+.title {
+  margin-bottom: 16px;
+}
+
+.char {
+  display: inline-block;
+}
+
+.bracket {
+  color: #9e9e9e;
+}
+
+.quote {
+  margin-right: 4px;
+  padding: 0 2px;
+  background-color: #f2f2f2;
+  border-left: 2px solid #a0a0a0;
+}

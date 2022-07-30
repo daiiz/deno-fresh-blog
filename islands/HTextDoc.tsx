@@ -3,10 +3,21 @@ import { h } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 const LineChar = ({ char }: { char: string }) => {
-  return <span>{char}</span>;
+  const classNames = ["char"];
+  if (char === "[" || char === "]") {
+    classNames.push("bracket");
+  }
+  if (char === ">") {
+    classNames.push("quote");
+  }
+  return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-const Line = ({ text }: { text: string }) => {
+const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
+  const classNames = ["line"];
+  if (isTitle) {
+    classNames.push("title");
+  }
   let renderingText = text;
   // 行頭の空白文字をタブ文字に統一する
   const [, matched] = text.match(/^(\s+)/) || [];
@@ -19,7 +30,7 @@ const Line = ({ text }: { text: string }) => {
   for (const [idx, char] of renderingText.split("").entries()) {
     chars.push(<LineChar char={char} key={idx} />);
   }
-  return <div class="line">{chars}</div>;
+  return <div class={classNames.join(" ")}>{chars}</div>;
 };
 
 export default function HTextDoc({ text }: { text: string }) {
@@ -30,7 +41,7 @@ export default function HTextDoc({ text }: { text: string }) {
 
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
-    lineElems.push(<Line text={line} key={idx} />);
+    lineElems.push(<Line text={line} key={idx} isTitle={idx === 0} />);
   }
   return (
     <div class="textdoc" style={{ padding: "0 8px" }}>
