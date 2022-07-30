@@ -10,10 +10,12 @@ import {
 const LineLink = ({
   title,
   url,
+  imageUrl,
   isExternal,
 }: {
   title: string;
   url: string;
+  imageUrl: string;
   isExternal: boolean;
 }) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
@@ -30,7 +32,7 @@ const LineLink = ({
     <span class="doc-link-container">
       <DocLinkRef />
       <a href={url} class={className} target="_blank" rel="noopener noreferrer">
-        {title || url}
+        {title || url || imageUrl}
       </a>
     </span>
   );
@@ -90,6 +92,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
               <LineLink
                 title={linkLikeRes.title}
                 url={linkLikeRes.url}
+                imageUrl={linkLikeRes.imageUrl}
                 isExternal={false}
               />
               <LineChar char="]" />
@@ -99,14 +102,29 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
         idx += subStr.length - 1;
         continue;
       }
+
       // リンクっぽいブラケティングを解析する
       const linkLikeRes = parseLinkLikeBracketing(subStr);
+      if (linkLikeRes.imageUrl) {
+        charElems.push(
+          <span class="image-container">
+            <img loading="lazy" class="image" src={linkLikeRes.imageUrl} />
+            <span class="image-notation nopre">
+              <LineChar char={subStr} />
+            </span>
+          </span>
+        );
+        idx += subStr.length - 1;
+        continue;
+      }
+
       if (linkLikeRes.url) {
         charElems.push(<LineChar char="[" key={idx + "_["} />);
         charElems.push(
           <LineLink
             title={linkLikeRes.title}
             url={linkLikeRes.url}
+            imageUrl={linkLikeRes.imageUrl}
             isExternal={true}
             key={idx + "_" + linkLikeRes.title}
           />
@@ -128,7 +146,13 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       if (/^https?:\/\//.test(subStr)) {
         const key = idx + "_" + subStr;
         charElems.push(
-          <LineLink title="" url={subStr} isExternal={true} key={key} />
+          <LineLink
+            title=""
+            url={subStr}
+            imageUrl=""
+            isExternal={true}
+            key={key}
+          />
         );
         idx += subStr.length - 1;
         continue;
