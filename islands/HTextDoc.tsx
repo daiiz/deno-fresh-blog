@@ -4,6 +4,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
   isGyazoBraketing,
   getGyazoThumbnailUrl,
+  parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
 
 const LineChar = ({ char }: { char: string }) => {
@@ -51,7 +52,6 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       // Gyazo画像の埋め込み
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);
-        // console.log("...", subStr, srcUrl);
         charElems.push(
           <div class="image-container">
             <img loading="lazy" class="image" src={srcUrl} />
@@ -61,6 +61,17 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
             </div>
           </div>
         );
+        idx += subStr.length - 1;
+        continue;
+      }
+      // リンクっぽいブラケティングを解析する
+      const linkLikeRes = parseLinkLikeBracketing(subStr);
+      if (linkLikeRes.url && linkLikeRes.title) {
+        console.log(linkLikeRes);
+        const linkTitle = `[${linkLikeRes.title}]`;
+        for (const [tIdx, tChar] of linkTitle.split("").entries()) {
+          charElems.push(<LineChar char={tChar} key={idx + "_" + tIdx} />);
+        }
         idx += subStr.length - 1;
         continue;
       }

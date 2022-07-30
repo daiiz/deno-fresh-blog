@@ -9,3 +9,21 @@ export const getGyazoThumbnailUrl = (bracketingText: string): string => {
   );
   return `https://gyazo.com/${gyazoId}/max_size/1000`;
 };
+
+export const parseLinkLikeBracketing = (bracketingText: string) => {
+  const text = bracketingText.replace(/[\[\]]/g, "");
+  const toks = text.split(" ");
+  const linkTextToks = [];
+  let url = "";
+  for (const tok of toks) {
+    if (tok.startsWith("http://") || tok.startsWith("https://")) {
+      url = tok;
+    } else {
+      linkTextToks.push(tok);
+    }
+  }
+  return {
+    title: linkTextToks.join(" "),
+    url,
+  };
+};
