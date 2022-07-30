@@ -2,8 +2,7 @@
   margin: 1em auto;
   word-wrap: break-word;
   white-space: pre-wrap;
-  font-size: 14px;
-  /* tab-size: 12; */
+  font-size: 15px;
   /* color: #4a4a4a; */
   width: calc(100% - 132px);
   max-width: 960px;
@@ -30,7 +29,8 @@
 }
 
 .title {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  font-size: 1.1em;
 }
 
 .char,
@@ -79,4 +79,9 @@
   user-select: none;
   -webkit-user-drag: none;
   -moz-user-drag: none;
+  filter: grayscale(100%);
+}
+
+.image-container img:hover {
+  filter: grayscale(0%);
 }

@@ -51,7 +51,7 @@ export default function DocPage(props: PageProps) {
         </div>
         <div class={tw`px-2 text-sm`}>
           <a
-            href={`/docs/text/${encodeURIComponent(title)}`}
+            href={`/docs/htext/${encodeURIComponent(title)}`}
             class={tw`text-blue-600`}
           >
             text

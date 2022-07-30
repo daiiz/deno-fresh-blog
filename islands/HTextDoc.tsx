@@ -63,7 +63,10 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
         charElems.push(
           <div class="image-container">
             <img class="image" src={srcUrl} />
-            <div class="image-notation">{subStr}</div>
+            <div class="image-notation">
+              {subStr}
+              <wbr />
+            </div>
           </div>
         );
         idx += subStr.length - 1;
