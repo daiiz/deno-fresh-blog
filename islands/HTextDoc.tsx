@@ -62,7 +62,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
         // console.log("...", subStr, srcUrl);
         charElems.push(
           <div class="image-container">
-            <img class="image" src={srcUrl} />
+            <img loading="lazy" class="image" src={srcUrl} />
             <div class="image-notation">
               {subStr}
               <wbr />
