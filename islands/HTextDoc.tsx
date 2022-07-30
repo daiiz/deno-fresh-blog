@@ -17,9 +17,10 @@ const LineLink = ({
   isExternal: boolean;
 }) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
+  const isScrapboxUrl = url.startsWith("https://scrapbox.io/");
   return (
     <span class="doc-link-container">
-      <span class="doc-link-ref">{url}&nbsp;</span>
+      {isScrapboxUrl ? "" : <span class="doc-link-ref">{url}&nbsp;</span>}
       <a href={url} class={className} target="_blank" rel="noopener noreferrer">
         {title}
       </a>
@@ -75,10 +76,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
         charElems.push(
           <span class="image-container">
             <img loading="lazy" class="image" src={srcUrl} />
-            <span class="image-notation">
-              {subStr}
-              <wbr />
-            </span>
+            <span class="image-notation">{subStr}</span>
           </span>
         );
         idx += subStr.length - 1;
