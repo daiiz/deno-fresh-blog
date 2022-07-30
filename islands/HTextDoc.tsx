@@ -18,9 +18,12 @@ const LineLink = ({
 }) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
   return (
-    <a href={url} class={className} target="_blank" rel="noopener noreferrer">
-      {title}
-    </a>
+    <span class="doc-link-container">
+      <span class="doc-link-ref">{url}&nbsp;</span>
+      <a href={url} class={className} target="_blank" rel="noopener noreferrer">
+        {title}
+      </a>
+    </span>
   );
 };
 
@@ -70,13 +73,13 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);
         charElems.push(
-          <div class="image-container">
+          <span class="image-container">
             <img loading="lazy" class="image" src={srcUrl} />
-            <div class="image-notation">
+            <span class="image-notation">
               {subStr}
               <wbr />
-            </div>
-          </div>
+            </span>
+          </span>
         );
         idx += subStr.length - 1;
         continue;
@@ -108,10 +111,10 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
   return (
     <div>
       <div class={classNames.join(" ")}>
-        {tabCharElems.length ? <div class="indent">{tabCharElems}</div> : ""}
-        <div class={contentClassNames.join(" ")} style={contentStyle}>
+        {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
+        <span class={contentClassNames.join(" ")} style={contentStyle}>
           {charElems.length > 0 ? charElems : <br />}
-        </div>
+        </span>
       </div>
     </div>
   );

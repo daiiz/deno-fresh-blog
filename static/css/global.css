@@ -1,5 +1,21 @@
+.doc-link-container {
+  display: inline-block;
+  position: relative;
+}
+
+.doc-link-ref {
+  pointer-events: none;
+  display: inline-block;
+  /* color: rgba(0, 0, 0, 0.05); */
+  color: transparent;
+  font-size: 12px;
+  position: absolute;
+  left: 2px;
+}
+
 .doc-link {
   color: #034575;
+  position: relative;
 }
 
 .doc-link-underline {
@@ -68,6 +84,7 @@
 
 .image-notation {
   position: absolute;
+  display: inline-block;
   bottom: 2px;
   left: 2px;
   color: rgba(0, 0, 0, 0.1);
