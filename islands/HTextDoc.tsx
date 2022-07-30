@@ -17,12 +17,20 @@ const LineLink = ({
   isExternal: boolean;
 }) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
-  const isScrapboxUrl = url.startsWith("https://scrapbox.io/");
+
+  const DocLinkRef = () => {
+    const isScrapboxUrl = url.startsWith("https://scrapbox.io/");
+    if (isScrapboxUrl || !title) {
+      return <span></span>;
+    }
+    return <span class="doc-link-ref">{url}&nbsp;</span>;
+  };
+
   return (
     <span class="doc-link-container">
-      {isScrapboxUrl ? "" : <span class="doc-link-ref">{url}&nbsp;</span>}
+      <DocLinkRef />
       <a href={url} class={className} target="_blank" rel="noopener noreferrer">
-        {title}
+        {title || url}
       </a>
     </span>
   );
@@ -100,6 +108,25 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
         continue;
       }
     }
+
+    // 裸のURLの対応
+    if (
+      char === "h" &&
+      chars[idx + 1] === "t" &&
+      chars[idx + 2] === "t" &&
+      chars[idx + 3] === "p"
+    ) {
+      const subStr = chars.slice(idx).join("").split(" ")[0];
+      if (/^https?:\/\//.test(subStr)) {
+        const key = idx + "_" + subStr;
+        charElems.push(
+          <LineLink title="" url={subStr} isExternal={true} key={key} />
+        );
+        idx += subStr.length - 1;
+        continue;
+      }
+    }
+
     charElems.push(<LineChar char={char} key={idx} />);
   }
 
