@@ -89,7 +89,7 @@
 .image-notation {
   position: absolute;
   display: inline-block;
-  bottom: 2px;
+  bottom: 1px;
   left: 2px;
   font-size: 12px;
   white-space: pre;
