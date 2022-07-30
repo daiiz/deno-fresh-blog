@@ -12,19 +12,24 @@ export const getGyazoThumbnailUrl = (bracketingText: string): string => {
 
 export const parseLinkLikeBracketing = (bracketingText: string) => {
   const text = bracketingText.replace(/[\[\]]/g, "");
+  if (text.startsWith("/")) {
+    return {
+      title: text,
+      url: `https://scrapbox.io/${text.substring(1)}`,
+    };
+  }
   const toks = text.split(" ");
   const linkTextToks = [];
   let url = "";
-  let title = linkTextToks.join(" ");
   for (const tok of toks) {
     if (tok.startsWith("http://") || tok.startsWith("https://")) {
       url = tok;
-    } else if (tok.startsWith("/")) {
-      title = tok;
-      url = `https://scrapbox.io/${tok.substring(1)}`;
     } else {
       linkTextToks.push(tok);
     }
   }
-  return { title, url };
+  return {
+    title: linkTextToks.join(" "),
+    url,
+  };
 };
