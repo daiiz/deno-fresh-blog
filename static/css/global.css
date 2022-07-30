@@ -1,12 +1,16 @@
+.doc-link {
+  color: #034575;
+}
+
+.doc-link-underline {
+  border-bottom: 1px solid #99c;
+}
+
 .pre {
   margin: 1em auto;
   word-wrap: break-word;
   white-space: pre-wrap;
-  font-size: 15px;
-  /* color: #4a4a4a; */
-  width: calc(100% - 132px);
-  max-width: 960px;
-  min-width: 600px;
+  max-width: 50em;
 }
 
 .line {
@@ -16,6 +20,7 @@
 }
 
 .indent {
+  position: absolute;
   display: inline-block;
   width: 1px;
 }
@@ -30,7 +35,7 @@
 
 .title {
   margin-bottom: 24px;
-  font-size: 1.1em;
+  /* font-size: 1.1em; */
 }
 
 .char,
@@ -56,7 +61,7 @@
 .image-container {
   position: relative;
   display: inline-block;
-  margin: 3px 0;
+  margin: 8px 0;
   width: fit-content;
   height: fit-content;
 }
@@ -67,6 +72,10 @@
   left: 2px;
   color: rgba(0, 0, 0, 0.1);
   font-size: 12px;
+}
+
+.image-notation:hover {
+  color: #034575;
 }
 
 .image {

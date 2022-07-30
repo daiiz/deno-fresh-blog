@@ -1,18 +1,10 @@
 /** @jsx h */
 import { h } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-
-const isGyazoBraketing = (text: string): boolean => {
-  return /^\[https?:\/\/gyazo\.com\/[0-9a-f]{32}\]$/.test(text);
-};
-
-const getGyazoThumbnailUrl = (bracketingText: string): string => {
-  const gyazoId = bracketingText.replace(
-    /^\[https?:\/\/gyazo\.com\/([0-9a-f]{32})\]$/,
-    "$1"
-  );
-  return `https://gyazo.com/${gyazoId}/max_size/1000`;
-};
+import {
+  isGyazoBraketing,
+  getGyazoThumbnailUrl,
+} from "@islands-lib/bracketing.ts";
 
 const LineChar = ({ char }: { char: string }) => {
   const classNames = ["char"];
@@ -62,7 +54,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
         // console.log("...", subStr, srcUrl);
         charElems.push(
           <div class="image-container">
-            <img class="image" src={srcUrl} />
+            <img loading="lazy" class="image" src={srcUrl} />
             <div class="image-notation">
               {subStr}
               <wbr />
@@ -82,7 +74,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
   return (
     <div>
       <div class={classNames.join(" ")}>
-        <div class="indent">{tabCharElems}</div>
+        {tabCharElems.length ? <div class="indent">{tabCharElems}</div> : ""}
         <div class={contentClassNames.join(" ")} style={contentStyle}>
           {charElems.length > 0 ? charElems : <br />}
         </div>

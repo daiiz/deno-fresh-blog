@@ -12,7 +12,7 @@ interface LiItemProps {
 export const LiItem = ({ title, url, date }: LiItemProps) => {
   return (
     <li>
-      <a href={url} class={tw`text-blue-500`}>
+      <a href={url} class="doc-link doc-link-underline">
         {title || "Untitled"}
       </a>
     </li>
@@ -34,7 +34,7 @@ export default function RecentArtices() {
   return (
     <ul>
       {articles.map((x) => {
-        const url = `./docs/${encodeURIComponent(x.title)}`;
+        const url = `./docs/htext/${encodeURIComponent(x.title)}`;
         const date = new Date(x.publishedAt)
           .toLocaleString()
           .replace(/:\d+$/, "");
