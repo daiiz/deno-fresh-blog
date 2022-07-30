@@ -1,0 +1,16 @@
+.pre {
+  margin: 1em auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-size: 14px;
+  tab-size: 12;
+  /* color: #4a4a4a; */
+  width: calc(100% - 132px);
+  max-width: 960px;
+  min-width: 600px;
+}
+
+.line {
+  min-height: 1.1em;
+  font-family: "Roboto", Helvetica, Arial, "Hiragino Sans", sans-serif;
+}

@@ -2,23 +2,6 @@
 import { h } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
-const preStyle = {
-  margin: "1em auto",
-  wordWrap: "break-word",
-  whiteSpace: "pre-wrap",
-  fontSize: "14px",
-  tabSize: 40, // 64
-  // color: "#4a4a4a",
-  width: "calc(100% - 132px)",
-  maxWidth: "960px",
-  minWidth: "600px",
-};
-
-const lineStyle = {
-  minHeight: "1.1em",
-  fontFamily: '"Roboto",Helvetica,Arial,"Hiragino Sans",sans-serif',
-};
-
 const LineChar = ({ char }: { char: string }) => {
   return <span>{char}</span>;
 };
@@ -36,7 +19,7 @@ const Line = ({ text }: { text: string }) => {
   for (const [idx, char] of renderingText.split("").entries()) {
     chars.push(<LineChar char={char} key={idx} />);
   }
-  return <div style={lineStyle}>{chars}</div>;
+  return <div class="line">{chars}</div>;
 };
 
 export default function HTextDoc({ text }: { text: string }) {
@@ -51,7 +34,7 @@ export default function HTextDoc({ text }: { text: string }) {
   }
   return (
     <div class="textdoc" style={{ padding: "0 8px" }}>
-      <div style={preStyle}>{lineElems}</div>
+      <div class="pre">{lineElems}</div>
     </div>
   );
 }
