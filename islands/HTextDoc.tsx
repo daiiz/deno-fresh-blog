@@ -7,6 +7,23 @@ import {
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
 
+const LineLink = ({
+  title,
+  url,
+  isExternal,
+}: {
+  title: string;
+  url: string;
+  isExternal: boolean;
+}) => {
+  const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
+  return (
+    <a href={url} class={className} target="_blank" rel="noopener noreferrer">
+      {title}
+    </a>
+  );
+};
+
 const LineChar = ({ char }: { char: string }) => {
   const classNames = ["char"];
   if (char === "[" || char === "]") {
@@ -68,10 +85,16 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       const linkLikeRes = parseLinkLikeBracketing(subStr);
       if (linkLikeRes.url && linkLikeRes.title) {
         console.log(linkLikeRes);
-        const linkTitle = `[${linkLikeRes.title}]`;
-        for (const [tIdx, tChar] of linkTitle.split("").entries()) {
-          charElems.push(<LineChar char={tChar} key={idx + "_" + tIdx} />);
-        }
+        charElems.push(<LineChar char={"["} key={idx + "_["} />);
+        charElems.push(
+          <LineLink
+            title={linkLikeRes.title}
+            url={linkLikeRes.url}
+            isExternal={true}
+            key={idx + "_" + linkLikeRes.title}
+          />
+        );
+        charElems.push(<LineChar char={"]"} key={idx + "_]"} />);
         idx += subStr.length - 1;
         continue;
       }
