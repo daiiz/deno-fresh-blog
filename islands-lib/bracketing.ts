@@ -32,10 +32,14 @@ export const parseLinkLikeBracketing = (bracketingText: string) => {
   const linkTextToks = [];
   let url = "";
   let imageUrl = "";
+  let thumbnailUrl = "";
   for (const tok of toks) {
     if (tok.startsWith("http://") || tok.startsWith("https://")) {
-      if (isImageUrl(tok) || isGyazoUrl(tok)) {
+      if (isImageUrl(tok)) {
         imageUrl = tok;
+      } else if (isGyazoUrl(tok)) {
+        imageUrl = tok;
+        thumbnailUrl = getGyazoThumbnailUrl(`[${tok}]`);
       } else {
         url = tok;
       }
@@ -46,6 +50,7 @@ export const parseLinkLikeBracketing = (bracketingText: string) => {
   return {
     title: linkTextToks.join(" "),
     imageUrl,
+    thumbnailUrl,
     url,
   };
 };
