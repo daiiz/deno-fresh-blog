@@ -1,5 +1,5 @@
 .doc-link-container {
-  display: inline-block;
+  display: inline;
   position: relative;
 }
 
@@ -45,10 +45,6 @@
   display: inline-block;
 }
 
-.char {
-  user-select: auto;
-}
-
 .title {
   margin-bottom: 24px;
   /* font-size: 1.1em; */
@@ -58,6 +54,11 @@
 .image {
   display: inline-block;
   /* min-width: 1px; */
+}
+
+.char {
+  display: inline;
+  user-select: auto;
 }
 
 .bracket {
