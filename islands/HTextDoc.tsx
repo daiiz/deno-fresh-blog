@@ -92,7 +92,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       }
       // リンクっぽいブラケティングを解析する
       const linkLikeRes = parseLinkLikeBracketing(subStr);
-      if (linkLikeRes.url && linkLikeRes.title) {
+      if (linkLikeRes.url) {
         console.log(linkLikeRes);
         charElems.push(<LineChar char={"["} key={idx + "_["} />);
         charElems.push(
