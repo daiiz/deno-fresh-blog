@@ -59,8 +59,13 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       // Gyazo画像の埋め込み
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);
-        console.log("...", subStr, srcUrl);
-        charElems.push(<img class="image" src={srcUrl} />);
+        // console.log("...", subStr, srcUrl);
+        charElems.push(
+          <div class="image-container">
+            <img class="image" src={srcUrl} />
+            <div class="image-notation">{subStr}</div>
+          </div>
+        );
         idx += subStr.length - 1;
         continue;
       }
@@ -76,7 +81,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       <div class={classNames.join(" ")}>
         <div class="indent">{tabCharElems}</div>
         <div class={contentClassNames.join(" ")} style={contentStyle}>
-          {charElems}
+          {charElems.length > 0 ? charElems : <br />}
         </div>
       </div>
     </div>

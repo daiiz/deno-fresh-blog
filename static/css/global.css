@@ -36,7 +36,7 @@
 .char,
 .image {
   display: inline-block;
-  min-width: 1px;
+  /* min-width: 1px; */
 }
 
 .bracket {
@@ -53,13 +53,30 @@
   margin-right: 4px;
 }
 
-.image {
+.image-container {
+  position: relative;
+  display: inline-block;
   margin: 3px 0;
+  width: fit-content;
+  height: fit-content;
+}
+
+.image-notation {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  color: rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+}
+
+.image {
   border-radius: 1px;
   max-width: 300px;
   max-height: 300px;
 }
 
-.image img {
+.image-container img {
   user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
 }
