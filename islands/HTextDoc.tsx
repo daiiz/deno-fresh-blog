@@ -81,10 +81,19 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       // Gyazo画像の埋め込み
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);
+        const linkLikeRes = parseLinkLikeBracketing(subStr);
         charElems.push(
           <span class="image-container">
             <img loading="lazy" class="image" src={srcUrl} />
-            <span class="image-notation">{subStr}</span>
+            <span class="image-notation">
+              <LineChar char="[" />
+              <LineLink
+                title={linkLikeRes.title}
+                url={linkLikeRes.url}
+                isExternal={false}
+              />
+              <LineChar char="]" />
+            </span>
           </span>
         );
         idx += subStr.length - 1;
@@ -93,8 +102,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       // リンクっぽいブラケティングを解析する
       const linkLikeRes = parseLinkLikeBracketing(subStr);
       if (linkLikeRes.url) {
-        console.log(linkLikeRes);
-        charElems.push(<LineChar char={"["} key={idx + "_["} />);
+        charElems.push(<LineChar char="[" key={idx + "_["} />);
         charElems.push(
           <LineLink
             title={linkLikeRes.title}
@@ -103,7 +111,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
             key={idx + "_" + linkLikeRes.title}
           />
         );
-        charElems.push(<LineChar char={"]"} key={idx + "_]"} />);
+        charElems.push(<LineChar char="]" key={idx + "_]"} />);
         idx += subStr.length - 1;
         continue;
       }

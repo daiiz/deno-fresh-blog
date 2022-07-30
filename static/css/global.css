@@ -87,11 +87,16 @@
   display: inline-block;
   bottom: 2px;
   left: 2px;
-  color: rgba(0, 0, 0, 0.1);
   font-size: 12px;
+  white-space: pre;
 }
 
-.image-notation:hover {
+.image-notation a,
+.image-notation span {
+  color: rgba(0, 0, 0, 0.1);
+}
+
+.image-notation a:hover {
   color: #034575;
 }
 
