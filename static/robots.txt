@@ -1,5 +1,7 @@
 User-agent: *
-Disallow: /docs/
+Disallow: /docs/text/
+Disallow: /docs/json/
+Disallow: /docs/pdf/
 Disallow: /articles/
 Disallow: /api/
 

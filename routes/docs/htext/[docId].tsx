@@ -5,6 +5,7 @@ import { tw } from "@twind";
 import { findLatestArticle } from "@db";
 import { PageProps } from "$fresh/server.ts";
 import HTextDoc from "../../../islands/HTextDoc.tsx";
+import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
@@ -39,6 +40,7 @@ export default function DocTextPage(props: PageProps) {
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
+      <OpenGraphProtocol title={docTitle} text={docText} />
       <link rel="stylesheet" href="/css/global.css" />
       <link
         rel="stylesheet"
@@ -56,11 +58,10 @@ export default function DocTextPage(props: PageProps) {
           <a href="/" class={tw`text-blue-600`}>
             New notes
           </a>{" "}
-          {/* › <span class={tw`text-gray-500`}>{docTitle}</span> */}
         </div>
         <div class={tw`px-2 text-sm`}>
           <a
-            href={`/docs/${encodeURIComponent(docTitle)}`}
+            href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
             class={tw`text-blue-600`}
           >
             pdf

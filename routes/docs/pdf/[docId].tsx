@@ -4,7 +4,7 @@ import { h } from "preact";
 import { tw } from "@twind";
 import { findLatestArticle } from "@db";
 import { PageProps } from "$fresh/server.ts";
-import PdfDoc from "../../islands/PdfDoc.tsx";
+import PdfDoc from "../../../islands/PdfDoc.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
