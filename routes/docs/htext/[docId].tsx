@@ -34,6 +34,10 @@ export default function DocTextPage(props: PageProps) {
   return (
     <div data-doc-id={docId}>
       <title>{docTitle}</title>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:400,500,600"
+      />
       <HTextDoc text={docText} />
     </div>
   );
