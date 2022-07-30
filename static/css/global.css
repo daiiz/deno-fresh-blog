@@ -1,5 +1,21 @@
+.doc-link-container {
+  display: inline;
+  position: relative;
+}
+
+.doc-link-ref {
+  pointer-events: none;
+  display: inline-block;
+  /* color: rgba(0, 0, 0, 0.05); */
+  color: transparent;
+  font-size: 12px;
+  position: absolute;
+  left: 2px;
+}
+
 .doc-link {
   color: #034575;
+  position: relative;
 }
 
 .doc-link-underline {
@@ -29,10 +45,6 @@
   display: inline-block;
 }
 
-.char {
-  user-select: auto;
-}
-
 .title {
   margin-bottom: 24px;
   /* font-size: 1.1em; */
@@ -42,6 +54,11 @@
 .image {
   display: inline-block;
   /* min-width: 1px; */
+}
+
+.char {
+  display: inline;
+  user-select: auto;
 }
 
 .bracket {
@@ -58,6 +75,10 @@
   margin-right: 4px;
 }
 
+.anchor-image-container .image-container {
+  border-bottom: 1px solid #99c;
+}
+
 .image-container {
   position: relative;
   display: inline-block;
@@ -68,13 +89,23 @@
 
 .image-notation {
   position: absolute;
-  bottom: 2px;
+  display: inline-block;
+  bottom: 1px;
   left: 2px;
-  color: rgba(0, 0, 0, 0.1);
   font-size: 12px;
+  white-space: pre;
 }
 
-.image-notation:hover {
+.nopre {
+  white-space: break-spaces;
+}
+
+.image-notation a,
+.image-notation span {
+  color: rgba(0, 0, 0, 0.1);
+}
+
+.image-notation a:hover {
   color: #034575;
 }
 

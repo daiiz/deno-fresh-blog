@@ -4,7 +4,39 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
   isGyazoBraketing,
   getGyazoThumbnailUrl,
+  parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
+
+const LineLink = ({
+  title,
+  url,
+  imageUrl,
+  isExternal,
+}: {
+  title: string;
+  url: string;
+  imageUrl: string;
+  isExternal: boolean;
+}) => {
+  const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
+
+  const DocLinkRef = () => {
+    const isScrapboxUrl = url.startsWith("https://scrapbox.io/");
+    if (isScrapboxUrl || !title) {
+      return <span></span>;
+    }
+    return <span class="doc-link-ref">{url}&nbsp;</span>;
+  };
+
+  return (
+    <span class="doc-link-container">
+      <DocLinkRef />
+      <a href={url} class={className} target="_blank" rel="noopener noreferrer">
+        {title || url || imageUrl}
+      </a>
+    </span>
+  );
+};
 
 const LineChar = ({ char }: { char: string }) => {
   const classNames = ["char"];
@@ -51,20 +83,96 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       // Gyazo画像の埋め込み
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);
-        // console.log("...", subStr, srcUrl);
+        const linkLikeRes = parseLinkLikeBracketing(subStr);
         charElems.push(
-          <div class="image-container">
+          <span class="image-container">
             <img loading="lazy" class="image" src={srcUrl} />
-            <div class="image-notation">
-              {subStr}
-              <wbr />
-            </div>
-          </div>
+            <span class="image-notation">
+              <LineChar char="[" />
+              <LineLink
+                title={linkLikeRes.title}
+                url={linkLikeRes.url}
+                imageUrl={linkLikeRes.imageUrl}
+                isExternal={false}
+              />
+              <LineChar char="]" />
+            </span>
+          </span>
+        );
+        idx += subStr.length - 1;
+        continue;
+      }
+
+      // リンクっぽいブラケティングを解析する
+      const linkLikeRes = parseLinkLikeBracketing(subStr);
+      if (linkLikeRes.imageUrl) {
+        const imageElem = (
+          <span class="image-container">
+            <img loading="lazy" class="image" src={linkLikeRes.imageUrl} />
+            <span class="image-notation nopre">
+              <LineChar char={subStr} />
+            </span>
+          </span>
+        );
+        if (linkLikeRes.url) {
+          charElems.push(
+            <a
+              href={linkLikeRes.url}
+              class="anchor-image-container"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {imageElem}
+            </a>
+          );
+        } else {
+          charElems.push(imageElem);
+        }
+        idx += subStr.length - 1;
+        continue;
+      }
+
+      if (linkLikeRes.url) {
+        charElems.push(<LineChar char="[" key={idx + "_["} />);
+        charElems.push(
+          <LineLink
+            title={linkLikeRes.title}
+            url={linkLikeRes.url}
+            imageUrl={linkLikeRes.imageUrl}
+            isExternal={true}
+            key={idx + "_" + linkLikeRes.title}
+          />
+        );
+        charElems.push(<LineChar char="]" key={idx + "_]"} />);
+        idx += subStr.length - 1;
+        continue;
+      }
+    }
+
+    // 裸のURLの対応
+    if (
+      char === "h" &&
+      chars[idx + 1] === "t" &&
+      chars[idx + 2] === "t" &&
+      chars[idx + 3] === "p"
+    ) {
+      const subStr = chars.slice(idx).join("").split(" ")[0];
+      if (/^https?:\/\//.test(subStr)) {
+        const key = idx + "_" + subStr;
+        charElems.push(
+          <LineLink
+            title=""
+            url={subStr}
+            imageUrl=""
+            isExternal={true}
+            key={key}
+          />
         );
         idx += subStr.length - 1;
         continue;
       }
     }
+
     charElems.push(<LineChar char={char} key={idx} />);
   }
 
@@ -74,10 +182,10 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
   return (
     <div>
       <div class={classNames.join(" ")}>
-        {tabCharElems.length ? <div class="indent">{tabCharElems}</div> : ""}
-        <div class={contentClassNames.join(" ")} style={contentStyle}>
+        {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
+        <span class={contentClassNames.join(" ")} style={contentStyle}>
           {charElems.length > 0 ? charElems : <br />}
-        </div>
+        </span>
       </div>
     </div>
   );
