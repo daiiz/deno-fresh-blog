@@ -7,6 +7,17 @@ import {
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
 
+type LineProps = {
+  text: string;
+  isTitle?: boolean;
+  isJsonView?: boolean;
+};
+
+type LineCharProps = {
+  char: string;
+  isJsonView?: boolean;
+};
+
 const LineLink = ({
   title,
   url,
@@ -38,18 +49,26 @@ const LineLink = ({
   );
 };
 
-const LineChar = ({ char }: { char: string }) => {
+const LineChar = ({ char, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
   if (char === "[" || char === "]") {
     classNames.push("bracket");
-  }
-  if (char === ">") {
+  } else if (char === ">") {
     classNames.push("quote");
+  } else if (char === "\\t") {
+    classNames.push("tab");
+  }
+
+  // XXX: 雑
+  if (isJsonView) {
+    if (["[", "]", "{", "}", '"', ","].includes(char)) {
+      classNames.push("json-mark");
+    }
   }
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
+export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
@@ -72,9 +91,17 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
   }
 
   const charElems = [];
-  if (chars[spaceLen] === ">") {
+
+  // 引用行の対応
+  if (isJsonView) {
+    const t = chars.join("").trim();
+    if (/^"\\t*\>/.test(t)) {
+      contentClassNames.push("quote");
+    }
+  } else if (chars[spaceLen] === ">") {
     contentClassNames.push("quote");
   }
+
   for (let idx = spaceLen; idx < chars.length; idx++) {
     const char = chars[idx];
     // ブラケティングされている箇所の対応
@@ -156,7 +183,7 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       chars[idx + 2] === "t" &&
       chars[idx + 3] === "p"
     ) {
-      const subStr = chars.slice(idx).join("").split(" ")[0];
+      const subStr = chars.slice(idx).join("").split(/[\s"]/)[0];
       if (/^https?:\/\//.test(subStr)) {
         const key = idx + "_" + subStr;
         charElems.push(
@@ -173,11 +200,21 @@ const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
       }
     }
 
-    charElems.push(<LineChar char={char} key={idx} />);
+    // jsonViewモードでのタブ文字の対応
+    if (isJsonView) {
+      if (char === "\\" && chars[idx + 1] === "t") {
+        charElems.push(<LineChar char="\t" isJsonView key={idx + "_tab"} />);
+        idx += 2 - 1;
+        continue;
+      }
+    }
+
+    charElems.push(<LineChar char={char} isJsonView key={idx} />);
   }
 
+  const spaceUnitPx = isJsonView ? 16 : 42;
   const contentStyle = {
-    marginLeft: `${spaceLen * 42}px`,
+    marginLeft: `${spaceLen * spaceUnitPx}px`,
   };
   return (
     <div>
