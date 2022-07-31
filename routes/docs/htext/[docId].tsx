@@ -60,18 +60,20 @@ export default function DocTextPage(props: PageProps) {
           </a>{" "}
         </div>
         <div class={tw`px-2 text-sm`}>
-          <a
-            href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
-          >
-            pdf
-          </a>
+          <span>text</span>
           <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           <a
             href={`/docs/hjson/${encodeURIComponent(docTitle)}`}
             class={tw`text-blue-600`}
           >
             json
+          </a>
+          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <a
+            href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
+            class={tw`text-blue-600`}
+          >
+            pdf
           </a>
         </div>
       </div>
