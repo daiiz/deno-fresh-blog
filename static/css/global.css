@@ -37,6 +37,12 @@
   font-family: "Roboto", Helvetica, Arial, "Hiragino Sans", sans-serif;
 }
 
+.jsondoc .line {
+  font-family: monospace, "Roboto", Helvetica, Arial, "Hiragino Sans",
+    sans-serif;
+  font-size: 15px;
+}
+
 .indent {
   position: absolute;
   display: inline-block;
@@ -65,13 +71,21 @@
   color: #9e9e9e;
 }
 
+.tab {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.json-mark {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 .content.quote {
   padding: 0 4px 0 8px;
   background-color: #f2f2f2;
   border-left: 2px solid #a0a0a0;
 }
 
-.char.quote {
+.textdoc .char.quote {
   position: absolute;
   color: transparent;
 }

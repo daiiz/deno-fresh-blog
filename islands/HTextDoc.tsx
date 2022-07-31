@@ -10,6 +10,12 @@ import {
 type LineProps = {
   text: string;
   isTitle?: boolean;
+  isJsonView?: boolean;
+};
+
+type LineCharProps = {
+  char: string;
+  isJsonView?: boolean;
 };
 
 const LineLink = ({
@@ -43,18 +49,25 @@ const LineLink = ({
   );
 };
 
-const LineChar = ({ char }: { char: string }) => {
+const LineChar = ({ char, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
   if (char === "[" || char === "]") {
     classNames.push("bracket");
-  }
-  if (char === ">") {
+  } else if (char === ">") {
     classNames.push("quote");
+  } else if (char === "\\t") {
+    classNames.push("tab");
+  }
+
+  if (isJsonView) {
+    if (["[", "]", "{", "}", '"', ","].includes(char)) {
+      classNames.push("json-mark");
+    }
   }
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-export const Line = ({ text, isTitle }: LineProps) => {
+export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
@@ -161,7 +174,7 @@ export const Line = ({ text, isTitle }: LineProps) => {
       chars[idx + 2] === "t" &&
       chars[idx + 3] === "p"
     ) {
-      const subStr = chars.slice(idx).join("").split(" ")[0];
+      const subStr = chars.slice(idx).join("").split(/[\s"]/)[0];
       if (/^https?:\/\//.test(subStr)) {
         const key = idx + "_" + subStr;
         charElems.push(
@@ -178,11 +191,21 @@ export const Line = ({ text, isTitle }: LineProps) => {
       }
     }
 
-    charElems.push(<LineChar char={char} key={idx} />);
+    // jsonViewモードでのタブ文字の対応
+    if (isJsonView) {
+      if (char === "\\" && chars[idx + 1] === "t") {
+        charElems.push(<LineChar char="\t" isJsonView key={idx + "_tab"} />);
+        idx += 2 - 1;
+        continue;
+      }
+    }
+
+    charElems.push(<LineChar char={char} isJsonView key={idx} />);
   }
 
+  const spaceUnitPx = isJsonView ? 16 : 42;
   const contentStyle = {
-    marginLeft: `${spaceLen * 42}px`,
+    marginLeft: `${spaceLen * spaceUnitPx}px`,
   };
   return (
     <div>

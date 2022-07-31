@@ -1,11 +1,6 @@
 /** @jsx h */
 import { h } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import {
-  isGyazoBraketing,
-  getGyazoThumbnailUrl,
-  parseLinkLikeBracketing,
-} from "@islands-lib/bracketing.ts";
 import { Line } from "./HTextDoc.tsx";
 
 export default function HJsonDoc({ text }: { text: string }) {
@@ -16,7 +11,7 @@ export default function HJsonDoc({ text }: { text: string }) {
   const lines = text.split("\n");
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
-    lineElems.push(<Line text={line} key={idx} />);
+    lineElems.push(<Line text={line} key={idx} isJsonView={true} />);
   }
 
   return (
