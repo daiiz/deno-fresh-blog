@@ -80,9 +80,18 @@
 }
 
 .content.quote {
-  padding: 0 4px 0 8px;
   background-color: #f2f2f2;
   border-left: 2px solid #a0a0a0;
+}
+
+.textdoc .content.quote {
+  padding: 0 4px 0 8px;
+}
+
+.jsondoc .content.quote {
+  padding: 0 4px 0 4px;
+  position: relative;
+  left: -6px;
 }
 
 .textdoc .char.quote {

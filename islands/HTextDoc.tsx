@@ -90,9 +90,17 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
   }
 
   const charElems = [];
-  if (chars[spaceLen] === ">") {
+
+  // 引用行の対応
+  if (isJsonView) {
+    const t = chars.join("").trim();
+    if (/^"\\t*\>/.test(t)) {
+      contentClassNames.push("quote");
+    }
+  } else if (chars[spaceLen] === ">") {
     contentClassNames.push("quote");
   }
+
   for (let idx = spaceLen; idx < chars.length; idx++) {
     const char = chars[idx];
     // ブラケティングされている箇所の対応
