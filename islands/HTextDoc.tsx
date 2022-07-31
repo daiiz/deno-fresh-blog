@@ -59,6 +59,7 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
     classNames.push("tab");
   }
 
+  // XXX: 雑
   if (isJsonView) {
     if (["[", "]", "{", "}", '"', ","].includes(char)) {
       classNames.push("json-mark");
