@@ -28,6 +28,10 @@
   white-space: pre-wrap;
 }
 
+.jsondoc .pre {
+  max-width: calc(50em + 70px);
+}
+
 .line {
   display: inline-block;
   min-height: 1.1em;
