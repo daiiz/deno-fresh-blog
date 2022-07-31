@@ -195,7 +195,8 @@ export default function HTextDoc({ text }: { text: string }) {
   if (!IS_BROWSER) {
     return <div />;
   }
-  const lines = text.split("\n");
+  // Helpfeel記法は索引的に利用したいので本文には表示しない
+  const lines = text.split("\n").filter((x) => !x.trim().startsWith("? "));
 
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
