@@ -68,6 +68,8 @@ export default function DocJsonPage(props: PageProps) {
             text
           </a>
           <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <span>json</span>
+          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           <a
             href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
             class={tw`text-blue-600`}

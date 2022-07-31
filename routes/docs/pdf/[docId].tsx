@@ -63,6 +63,8 @@ export default function DocPage(props: PageProps) {
           >
             json
           </a>
+          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <span>pdf</span>
         </div>
       </div>
       <div style={{ flexGrow: 1 }}>
