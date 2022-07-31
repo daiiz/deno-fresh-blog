@@ -5,6 +5,7 @@ import { tw } from "@twind";
 import { findLatestArticle } from "@db";
 import { PageProps } from "$fresh/server.ts";
 import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
+import HJsonDoc from "../../../islands/HJsonDoc.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
@@ -75,7 +76,7 @@ export default function DocJsonPage(props: PageProps) {
           </a>
         </div>
       </div>
-      {/* <HTextDoc text={docText} /> */}
+      <HJsonDoc text={docJson} />
     </div>
   );
 }

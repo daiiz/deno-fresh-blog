@@ -7,6 +7,11 @@ import {
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
 
+type LineProps = {
+  text: string;
+  isTitle?: boolean;
+};
+
 const LineLink = ({
   title,
   url,
@@ -49,7 +54,7 @@ const LineChar = ({ char }: { char: string }) => {
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-const Line = ({ text, isTitle }: { text: string; isTitle: boolean }) => {
+export const Line = ({ text, isTitle }: LineProps) => {
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
