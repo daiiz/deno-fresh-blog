@@ -79,10 +79,22 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
   // 行頭の空白文字をタブ文字に統一する
   const [, matched] = text.match(/^(\s+)/) || [];
   let spaceLen = 0;
+  let tabChars = "";
   if (matched) {
     spaceLen = matched.length;
-    const tabChars = "\t".repeat(spaceLen);
+    tabChars = "\t".repeat(spaceLen);
     renderingText = text.replace(/^\s*/, tabChars);
+  }
+  // `""`で囲まれた文字列値の先頭の空白文字をタブ文字に統一する
+  if (isJsonView) {
+    const pattern = /^\"((:?\s|\\t)+)/;
+    const tRenderingText = renderingText.trim();
+    const [, matched] = tRenderingText.match(pattern) || [];
+    if (matched) {
+      const _matched = matched.replace(/\\t/g, " ");
+      const tabStrs = "\\t".repeat(_matched.length);
+      renderingText = tabChars + tRenderingText.replace(pattern, `"${tabStrs}`);
+    }
   }
   const chars = renderingText.split("");
   const tabCharElems = [];
