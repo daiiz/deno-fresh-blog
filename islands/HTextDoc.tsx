@@ -212,7 +212,7 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
     charElems.push(<LineChar char={char} isJsonView key={idx} />);
   }
 
-  const spaceUnitPx = isJsonView ? 16 : 42;
+  const spaceUnitPx = isJsonView ? 12 : 32;
   const contentStyle = {
     marginLeft: `${spaceLen * spaceUnitPx}px`,
   };
