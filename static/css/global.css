@@ -55,7 +55,10 @@
 }
 
 .title {
+  font-size: 1.73em;
+  color: #444;
   margin-bottom: 24px;
+  margin-top: 12px;
 }
 
 .char,
