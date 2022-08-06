@@ -42,7 +42,12 @@ const LineLink = ({
   return (
     <span class="doc-link-container">
       <DocLinkRef />
-      <a href={url} class={className} target="_blank" rel="noopener noreferrer">
+      <a
+        href={imageUrl || url}
+        class={className}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {title || url || imageUrl}
       </a>
     </span>
