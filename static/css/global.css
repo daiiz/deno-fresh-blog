@@ -33,6 +33,12 @@
   max-width: calc(50em + 70px);
 }
 
+.line-wrap {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
 .line {
   display: inline-block;
   min-height: 1.1em;
@@ -122,7 +128,7 @@
   bottom: 1px;
   left: 2px;
   font-size: 12px;
-  white-space: pre;
+  white-space: pre; /* nowrap */
 }
 
 .nopre {

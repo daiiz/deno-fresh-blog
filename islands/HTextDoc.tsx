@@ -240,7 +240,7 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
     marginLeft: `${spaceLen * spaceUnitPx}px`,
   };
   return (
-    <div>
+    <div class="line-wrap">
       <div class={classNames.join(" ")}>
         {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
         <span class={contentClassNames.join(" ")} style={contentStyle}>
