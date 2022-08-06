@@ -22,9 +22,6 @@ export default function Home() {
         </div>
         <h2 class={tw`text-xl mb-4`}>New notes</h2>
         <RecentArticles />
-        <ul>
-          <LiItem title="入門GUI" url="./docs/guibook" date="2020/10/3 15:00" />
-        </ul>
       </div>
     </div>
   );
