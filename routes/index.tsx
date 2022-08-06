@@ -25,14 +25,6 @@ export default function Home() {
         <ul>
           <LiItem title="入門GUI" url="./docs/guibook" date="2020/10/3 15:00" />
         </ul>
-        <h2 class={tw`text-xl mb-4 mt-6`}>Sample notes</h2>
-        <ul>
-          <LiItem
-            title="pdf.jsに付属していたサンプル文書"
-            url="./docs/sample"
-            date="2009/4/2 8:39"
-          />
-        </ul>
       </div>
     </div>
   );
