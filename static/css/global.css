@@ -26,6 +26,7 @@
   margin: 1em auto;
   word-wrap: break-word;
   white-space: pre-wrap;
+  line-break: anywhere;
 }
 
 .jsondoc .pre {
@@ -126,6 +127,7 @@
 
 .nopre {
   white-space: break-spaces;
+  line-break: auto;
 }
 
 .image-notation a,
