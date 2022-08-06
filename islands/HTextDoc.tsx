@@ -127,14 +127,14 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
           <span class="image-container">
             <img loading="lazy" class="image" src={srcUrl} />
             <span class="image-notation">
-              <LineChar char="[" />
+              <LineChar char="[" isJsonView={isJsonView} />
               <LineLink
                 title={linkLikeRes.title}
                 url={linkLikeRes.url}
                 imageUrl={linkLikeRes.imageUrl}
                 isExternal={false}
               />
-              <LineChar char="]" />
+              <LineChar char="]" isJsonView={isJsonView} />
             </span>
           </span>
         );
@@ -149,7 +149,7 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
           <span class="image-container">
             <img loading="lazy" class="image" src={linkLikeRes.imageUrl} />
             <span class="image-notation nopre">
-              <LineChar char={subStr} />
+              <LineChar char={subStr} isJsonView={isJsonView} />
             </span>
           </span>
         );
@@ -172,7 +172,9 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
       }
 
       if (linkLikeRes.url) {
-        charElems.push(<LineChar char="[" key={idx + "_["} />);
+        charElems.push(
+          <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
+        );
         charElems.push(
           <LineLink
             title={linkLikeRes.title}
@@ -182,7 +184,9 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
             key={idx + "_" + linkLikeRes.title}
           />
         );
-        charElems.push(<LineChar char="]" key={idx + "_]"} />);
+        charElems.push(
+          <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
+        );
         idx += subStr.length - 1;
         continue;
       }
@@ -215,13 +219,15 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
     // jsonViewモードでのタブ文字の対応
     if (isJsonView) {
       if (char === "\\" && chars[idx + 1] === "t") {
-        charElems.push(<LineChar char="\t" isJsonView key={idx + "_tab"} />);
+        charElems.push(
+          <LineChar char="\t" isJsonView={isJsonView} key={idx + "_tab"} />
+        );
         idx += 2 - 1;
         continue;
       }
     }
 
-    charElems.push(<LineChar char={char} isJsonView key={idx} />);
+    charElems.push(<LineChar char={char} isJsonView={isJsonView} key={idx} />);
   }
 
   const spaceUnitPx = isJsonView ? 12 : 32;
@@ -249,7 +255,9 @@ export default function HTextDoc({ text }: { text: string }) {
 
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
-    lineElems.push(<Line text={line} key={idx} isTitle={idx === 0} />);
+    lineElems.push(
+      <Line text={line} key={idx} isTitle={idx === 0} isJsonView={false} />
+    );
   }
   return (
     <div class="textdoc" style={{ padding: "0 8px" }}>
