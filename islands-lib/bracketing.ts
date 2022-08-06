@@ -1,8 +1,8 @@
-const isGyazoUrl = (url: string) => {
+const isGyazoUrl = (url: string): string => {
   return /^https?:\/\/gyazo\.com\/[0-9a-f]{32}(\/raw)?$/.test(url);
 };
 
-const isImageUrl = (url: string) => {
+const isImageUrl = (url: string): string => {
   return /^https?:\/\/.+\.(png|jpe?g|gif|svg|webp)$/.test(url);
 };
 
