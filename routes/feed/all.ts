@@ -11,6 +11,10 @@ export const handler = async (
     description: "Recent updates on daiizblog",
     upteted: new Date(),
   });
+  const feedItems = [];
+  for (const item of feedItems) {
+    feed.addItem(item);
+  }
   return new Response(feed.rss2(), {
     headers: { "Content-Type": "application/rss+xml; charset=UTF-8" },
   });
