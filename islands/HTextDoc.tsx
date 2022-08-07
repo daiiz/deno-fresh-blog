@@ -68,9 +68,18 @@ const LineScrapboxPageLink = ({
   }
   const encodedTitle = encodeURIComponent(title);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
+
+  const onClick = (e: MouseEvent) => {
+    if (!e.metaKey && !e.ctrlKey) {
+      // e.preventDefault();
+      // return;
+    }
+  };
+
   return (
     <span class="doc-link-container">
       <a
+        onClick={onClick}
         href={scrapboxUrl}
         class="doc-scrapbox-link"
         target="_blank"
