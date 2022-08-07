@@ -19,6 +19,27 @@ type LineCharProps = {
   isJsonView?: boolean;
 };
 
+const EditLink = ({
+  projectName,
+  docTitle,
+}: {
+  projectName: string;
+  docTitle: string;
+}) => {
+  const encodedTitle = encodeURIComponent(docTitle);
+  const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
+  return (
+    <a
+      href={scrapboxUrl}
+      class="menu-link edit-link"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Edit
+    </a>
+  );
+};
+
 const LineLink = ({
   title,
   url,
@@ -75,7 +96,6 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
 };
 
 export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
-  console.log(projectName);
   const classNames = ["line"];
   const contentClassNames = ["content"];
 

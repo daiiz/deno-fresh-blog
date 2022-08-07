@@ -166,4 +166,7 @@
 
 .edit-link {
   text-decoration: underline;
+  font-size: 0.875rem;
+  margin-left: 8px;
+  opacity: 0.9;
 }
