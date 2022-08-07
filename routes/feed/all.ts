@@ -9,6 +9,7 @@ export const handler = async (
 ): Promise<Response> => {
   const feed = new Feed({
     title: "daiizblog",
+    link: "https://daiizblog.deno.dev/",
     description: "Recent updates on daiizblog",
     upteted: new Date(),
   });
@@ -17,7 +18,17 @@ export const handler = async (
   const feedItems = [];
   const articles = await findRecentArticles();
   for (const article of articles) {
-    console.log(article.bookKey);
+    console.log(article.bookKey, article);
+    const encodedTitle = encodeURIComponent(article.title);
+    const url = `https://daiizblog.deno.dev/docs/htext/${encodedTitle}`;
+    const feedItem = {
+      title: article.title,
+      // `<a href="${srcUrl}"><img src="${srcUrl}" /></a>`,
+      // TODO: 差分テキストを含めたい
+      description: `<a href="${url}">${article.title}</a>`,
+      date: new Date(article.publishedAt),
+    };
+    feedItems.push(feedItem);
   }
 
   for (const item of feedItems) {
