@@ -66,7 +66,9 @@ const LineScrapboxPageLink = ({
   if (!projectName || !title) {
     return title;
   }
-  const encodedTitle = encodeURIComponent(title);
+  const encodedTitle = encodeURIComponent(
+    title.endsWith(".icon") ? title.slice(0, -5) : title
+  );
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
 
   const onClick = (e: MouseEvent) => {
