@@ -169,3 +169,7 @@
   color: #034575;
   border-bottom: 1px solid #99c;
 }
+
+.doc-scrapbox-link:hover {
+  color: #034575;
+}

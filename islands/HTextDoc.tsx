@@ -20,7 +20,6 @@ type LineCharProps = {
 };
 
 type LineLinkProps = {
-  projectName: string;
   title: string;
   url: string;
   imageUrl: string;
@@ -57,13 +56,27 @@ const ScrapboxLineContent = ({
   );
 };
 
-const LineLink = ({
-  projectName,
-  title,
-  url,
-  imageUrl,
-  isExternal,
-}: LineLinkProps) => {
+const LineScrapboxPageLink = ({ projectName, title }) => {
+  if (!projectName || !title) {
+    return title;
+  }
+  const encodedTitle = encodeURIComponent(title);
+  const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
+  return (
+    <span class="doc-link-container">
+      <a
+        href={scrapboxUrl}
+        class="doc-scrapbox-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {title}
+      </a>
+    </span>
+  );
+};
+
+const LineLink = ({ title, url, imageUrl, isExternal }: LineLinkProps) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
 
   const DocLinkRef = () => {
@@ -169,7 +182,6 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
             <span class="image-notation">
               <LineChar char="[" isJsonView={isJsonView} />
               <LineLink
-                projectName={projectName}
                 title={linkLikeRes.title}
                 url={linkLikeRes.url}
                 imageUrl={linkLikeRes.imageUrl}
@@ -226,6 +238,23 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
             url={linkLikeRes.url}
             imageUrl={linkLikeRes.imageUrl}
             isExternal={true}
+            key={idx + "_" + linkLikeRes.title}
+          />
+        );
+        charElems.push(
+          <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
+        );
+        idx += subStr.length - 1;
+        continue;
+      } else {
+        // Scrapbox bracketing
+        charElems.push(
+          <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
+        );
+        charElems.push(
+          <LineScrapboxPageLink
+            projectName={projectName}
+            title={linkLikeRes.title}
             key={idx + "_" + linkLikeRes.title}
           />
         );
