@@ -3,20 +3,12 @@ import "dotenv/load.ts";
 import { h } from "preact";
 import { tw } from "@twind";
 import { findLatestArticle } from "@db";
+import { getScrapboxProjectName } from "@libapi";
 import { PageProps } from "$fresh/server.ts";
 import HTextDoc from "../../../islands/HTextDoc.tsx";
 import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
-
-const getScrapboxProjectName = (objectName: string): string => {
-  const toks = objectName.split("/");
-  if (toks.length !== 3) {
-    console.error("invalid object name");
-    return "";
-  }
-  return toks[0];
-};
 
 export const handler = {
   async GET(_, ctx) {
