@@ -19,6 +19,14 @@ type LineCharProps = {
   isJsonView?: boolean;
 };
 
+type LineLinkProps = {
+  projectName: string;
+  title: string;
+  url: string;
+  imageUrl: string;
+  isExternal: boolean;
+};
+
 type ScrapboxLineContentProps = {
   projectName: string;
   docTitle: string;
@@ -50,16 +58,12 @@ const ScrapboxLineContent = ({
 };
 
 const LineLink = ({
+  projectName,
   title,
   url,
   imageUrl,
   isExternal,
-}: {
-  title: string;
-  url: string;
-  imageUrl: string;
-  isExternal: boolean;
-}) => {
+}: LineLinkProps) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
 
   const DocLinkRef = () => {
@@ -165,6 +169,7 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
             <span class="image-notation">
               <LineChar char="[" isJsonView={isJsonView} />
               <LineLink
+                projectName={projectName}
                 title={linkLikeRes.title}
                 url={linkLikeRes.url}
                 imageUrl={linkLikeRes.imageUrl}
