@@ -56,7 +56,13 @@ const ScrapboxLineContent = ({
   );
 };
 
-const LineScrapboxPageLink = ({ projectName, title }) => {
+const LineScrapboxPageLink = ({
+  projectName,
+  title,
+}: {
+  projectName: string;
+  title: string;
+}) => {
   if (!projectName || !title) {
     return title;
   }
@@ -247,22 +253,24 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
         idx += subStr.length - 1;
         continue;
       } else {
-        // Scrapbox bracketing
-        charElems.push(
-          <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
-        );
-        charElems.push(
-          <LineScrapboxPageLink
-            projectName={projectName}
-            title={linkLikeRes.title}
-            key={idx + "_" + linkLikeRes.title}
-          />
-        );
-        charElems.push(
-          <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
-        );
-        idx += subStr.length - 1;
-        continue;
+        if (projectName && linkLikeRes.title) {
+          // Scrapbox bracketing
+          charElems.push(
+            <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
+          );
+          charElems.push(
+            <LineScrapboxPageLink
+              projectName={projectName}
+              title={linkLikeRes.title}
+              key={idx + "_" + linkLikeRes.title}
+            />
+          );
+          charElems.push(
+            <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
+          );
+          idx += subStr.length - 1;
+          continue;
+        }
       }
     }
 
