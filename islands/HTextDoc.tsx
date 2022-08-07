@@ -9,6 +9,7 @@ import {
 
 type LineProps = {
   text: string;
+  projectName: string;
   isTitle?: boolean;
   isJsonView?: boolean;
 };
@@ -73,7 +74,8 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
+export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
+  console.log(projectName);
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
@@ -251,7 +253,13 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
   );
 };
 
-export default function HTextDoc({ text }: { text: string }) {
+export default function HTextDoc({
+  projectName,
+  text,
+}: {
+  projectName: string;
+  text: string;
+}) {
   if (!IS_BROWSER) {
     return <div />;
   }
@@ -261,7 +269,13 @@ export default function HTextDoc({ text }: { text: string }) {
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
     lineElems.push(
-      <Line text={line} key={idx} isTitle={idx === 0} isJsonView={false} />
+      <Line
+        text={line}
+        key={idx}
+        isTitle={idx === 0}
+        isJsonView={false}
+        projectName={projectName}
+      />
     );
   }
   return (
