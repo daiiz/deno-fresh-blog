@@ -75,10 +75,6 @@ export default function DocTextPage(props: PageProps) {
           <a href="/" class={tw`text-blue-600`}>
             Home
           </a>
-          {/* <Divider />
-          <a class="menu-link edit-link" href="">
-            Edit
-          </a> */}
         </div>
         <div class={tw`px-2 text-sm`}>
           <span>text</span>
