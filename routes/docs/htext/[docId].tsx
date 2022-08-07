@@ -45,6 +45,11 @@ export const handler = {
 export default function DocTextPage(props: PageProps) {
   const { projectName, docId, docTitle, docText } = props.data;
   const title = projectName ? `${docTitle} - ${projectName}` : docTitle;
+
+  const Divider = () => {
+    return <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>;
+  };
+
   return (
     <div data-doc-id={docId}>
       <title>{title}</title>
@@ -68,19 +73,21 @@ export default function DocTextPage(props: PageProps) {
       >
         <div class={tw`text-sm`}>
           <a href="/" class={tw`text-blue-600`}>
-            New notes
-          </a>{" "}
+            Home
+          </a>
+          <Divider />
+          <a>Edit</a>
         </div>
         <div class={tw`px-2 text-sm`}>
           <span>text</span>
-          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <Divider />
           <a
             href={`/docs/hjson/${encodeURIComponent(docTitle)}`}
             class={tw`text-blue-600`}
           >
             json
           </a>
-          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <Divider />
           <a
             href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
             class={tw`text-blue-600`}
