@@ -9,6 +9,15 @@ import HJsonDoc from "../../../islands/HJsonDoc.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
+const getScrapboxProjectName = (objectName: string): string => {
+  const toks = objectName.split("/");
+  if (toks.length !== 3) {
+    console.error("invalid object name");
+    return "";
+  }
+  return toks[0];
+};
+
 export const handler = {
   async GET(_, ctx) {
     const docTitle = decodeURIComponent(ctx.params.docId);
@@ -18,12 +27,14 @@ export const handler = {
       : "";
     let docJson = "";
     const jsonUrl = `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.json`;
+    const projectName = getScrapboxProjectName(objectNameWithoutExt);
     const res = await fetch(jsonUrl, { method: "GET", redirect: "follow" });
     if (res.ok) {
       docJson = await res.text();
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
+        projectName,
         docTitle,
         docJson,
       })
@@ -32,7 +43,7 @@ export const handler = {
 };
 
 export default function DocJsonPage(props: PageProps) {
-  const { docId, docTitle, docJson } = props.data;
+  const { projectName, docId, docTitle, docJson } = props.data;
   return (
     <div data-doc-id={docId}>
       <title>{docTitle}</title>
@@ -78,7 +89,7 @@ export default function DocJsonPage(props: PageProps) {
           </a>
         </div>
       </div>
-      <HJsonDoc text={docJson} />
+      <HJsonDoc text={docJson} projectName={projectName} />
     </div>
   );
 }
