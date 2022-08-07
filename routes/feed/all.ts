@@ -7,8 +7,8 @@ export const handler = async (
   _ctx: HandlerContext
 ): Promise<Response> => {
   const feed = new Feed({
-    title: "test",
-    description: "test!",
+    title: "daiizblog",
+    description: "Recent updates on daiizblog",
     upteted: new Date(),
   });
   return new Response(feed.rss2(), {
