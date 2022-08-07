@@ -72,7 +72,7 @@ export default function DocTextPage(props: PageProps) {
         }}
       >
         <div class={tw`text-sm`}>
-          <a href="/" class={tw`text-blue-600`}>
+          <a href="/" class="menu-link">
             Home
           </a>
         </div>
@@ -81,14 +81,14 @@ export default function DocTextPage(props: PageProps) {
           <Divider />
           <a
             href={`/docs/hjson/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
+            class="menu-link"
           >
             json
           </a>
           <Divider />
           <a
             href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
+            class="menu-link"
           >
             pdf
           </a>

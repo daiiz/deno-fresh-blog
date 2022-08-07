@@ -162,6 +162,7 @@
 
 .menu-link {
   color: #034575;
+  text-decoration: underline;
 }
 
 .edit-link:hover {

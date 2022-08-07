@@ -55,15 +55,15 @@ export default function DocJsonPage(props: PageProps) {
         }}
       >
         <div class={tw`text-sm`}>
-          <a href="/" class={tw`text-blue-600`}>
-            New notes
+          <a href="/" class="menu-link">
+            Home
           </a>{" "}
           › {docTitle}
         </div>
         <div class={tw`px-2 text-sm`}>
           <a
             href={`/docs/htext/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
+            class="menu-link"
           >
             text
           </a>
@@ -72,7 +72,7 @@ export default function DocJsonPage(props: PageProps) {
           <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           <a
             href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
+            class="menu-link"
           >
             pdf
           </a>
