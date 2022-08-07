@@ -19,6 +19,13 @@ type LineCharProps = {
   isJsonView?: boolean;
 };
 
+type LineLinkProps = {
+  title: string;
+  url: string;
+  imageUrl: string;
+  isExternal: boolean;
+};
+
 type ScrapboxLineContentProps = {
   projectName: string;
   docTitle: string;
@@ -49,17 +56,44 @@ const ScrapboxLineContent = ({
   );
 };
 
-const LineLink = ({
+const LineScrapboxPageLink = ({
+  projectName,
   title,
-  url,
-  imageUrl,
-  isExternal,
 }: {
+  projectName: string;
   title: string;
-  url: string;
-  imageUrl: string;
-  isExternal: boolean;
 }) => {
+  if (!projectName || !title) {
+    return title;
+  }
+  const encodedTitle = encodeURIComponent(
+    title.endsWith(".icon") ? title.slice(0, -5) : title
+  );
+  const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
+
+  const onClick = (e: MouseEvent) => {
+    if (!e.metaKey && !e.ctrlKey) {
+      // e.preventDefault();
+      // return;
+    }
+  };
+
+  return (
+    <span class="doc-link-container">
+      <a
+        onClick={onClick}
+        href={scrapboxUrl}
+        class="doc-scrapbox-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {title}
+      </a>
+    </span>
+  );
+};
+
+const LineLink = ({ title, url, imageUrl, isExternal }: LineLinkProps) => {
   const className = isExternal ? "doc-link doc-link-underline" : "doc-link";
 
   const DocLinkRef = () => {
@@ -229,6 +263,25 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
         );
         idx += subStr.length - 1;
         continue;
+      } else {
+        if (projectName && linkLikeRes.title) {
+          // Scrapbox bracketing
+          charElems.push(
+            <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
+          );
+          charElems.push(
+            <LineScrapboxPageLink
+              projectName={projectName}
+              title={linkLikeRes.title}
+              key={idx + "_" + linkLikeRes.title}
+            />
+          );
+          charElems.push(
+            <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
+          );
+          idx += subStr.length - 1;
+          continue;
+        }
       }
     }
 

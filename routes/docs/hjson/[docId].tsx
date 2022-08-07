@@ -3,6 +3,7 @@ import "dotenv/load.ts";
 import { h } from "preact";
 import { tw } from "@twind";
 import { findLatestArticle } from "@db";
+import { getScrapboxProjectName } from "@libapi";
 import { PageProps } from "$fresh/server.ts";
 import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
 import HJsonDoc from "../../../islands/HJsonDoc.tsx";
@@ -18,12 +19,14 @@ export const handler = {
       : "";
     let docJson = "";
     const jsonUrl = `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.json`;
+    const projectName = getScrapboxProjectName(objectNameWithoutExt);
     const res = await fetch(jsonUrl, { method: "GET", redirect: "follow" });
     if (res.ok) {
       docJson = await res.text();
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
+        projectName,
         docTitle,
         docJson,
       })
@@ -32,7 +35,7 @@ export const handler = {
 };
 
 export default function DocJsonPage(props: PageProps) {
-  const { docId, docTitle, docJson } = props.data;
+  const { projectName, docId, docTitle, docJson } = props.data;
   return (
     <div data-doc-id={docId}>
       <title>{docTitle}</title>
@@ -78,7 +81,7 @@ export default function DocJsonPage(props: PageProps) {
           </a>
         </div>
       </div>
-      <HJsonDoc text={docJson} />
+      <HJsonDoc text={docJson} projectName={projectName} />
     </div>
   );
 }
