@@ -164,9 +164,7 @@
   color: #034575;
 }
 
-.edit-link {
-  text-decoration: underline;
-  font-size: 0.875rem;
-  margin-left: 8px;
-  opacity: 0.9;
+.edit-link:hover {
+  color: #034575;
+  border-bottom: 1px solid #99c;
 }

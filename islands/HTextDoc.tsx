@@ -19,23 +19,32 @@ type LineCharProps = {
   isJsonView?: boolean;
 };
 
-const EditLink = ({
-  projectName,
-  docTitle,
-}: {
+type ScrapboxLineContentProps = {
   projectName: string;
   docTitle: string;
-}) => {
+  children: any;
+  isTitle?: boolean;
+};
+
+const ScrapboxLineContent = ({
+  projectName,
+  docTitle,
+  isTitle,
+  children,
+}: ScrapboxLineContentProps) => {
+  if (!isTitle) {
+    return children;
+  }
   const encodedTitle = encodeURIComponent(docTitle);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
   return (
     <a
       href={scrapboxUrl}
-      class="menu-link edit-link"
+      class="edit-link"
       target="_blank"
       rel="noopener noreferrer"
     >
-      Edit
+      {children}
     </a>
   );
 };
@@ -265,9 +274,15 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
     <div class="line-wrap">
       <div class={classNames.join(" ")}>
         {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
-        <span class={contentClassNames.join(" ")} style={contentStyle}>
-          {charElems.length > 0 ? charElems : <br />}
-        </span>
+        <ScrapboxLineContent
+          projectName={projectName}
+          docTitle={text}
+          isTitle={isTitle}
+        >
+          <span class={contentClassNames.join(" ")} style={contentStyle}>
+            {charElems.length > 0 ? charElems : <br />}
+          </span>
+        </ScrapboxLineContent>
       </div>
     </div>
   );
