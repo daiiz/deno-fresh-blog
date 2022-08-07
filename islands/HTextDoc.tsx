@@ -183,7 +183,11 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
       if (linkLikeRes.imageUrl) {
         const imageElem = (
           <span class="image-container">
-            <img loading="lazy" class="image" src={linkLikeRes.imageUrl} />
+            <img
+              loading="lazy"
+              class="image"
+              src={linkLikeRes.thumbnailUrl || linkLikeRes.imageUrl}
+            />
             <span class="image-notation nopre">
               <LineChar char={subStr} isJsonView={isJsonView} />
             </span>
