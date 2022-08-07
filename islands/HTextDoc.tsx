@@ -9,6 +9,7 @@ import {
 
 type LineProps = {
   text: string;
+  projectName: string;
   isTitle?: boolean;
   isJsonView?: boolean;
 };
@@ -16,6 +17,36 @@ type LineProps = {
 type LineCharProps = {
   char: string;
   isJsonView?: boolean;
+};
+
+type ScrapboxLineContentProps = {
+  projectName: string;
+  docTitle: string;
+  children: any;
+  isTitle?: boolean;
+};
+
+const ScrapboxLineContent = ({
+  projectName,
+  docTitle,
+  isTitle,
+  children,
+}: ScrapboxLineContentProps) => {
+  if (!isTitle) {
+    return children;
+  }
+  const encodedTitle = encodeURIComponent(docTitle);
+  const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
+  return (
+    <a
+      href={scrapboxUrl}
+      class="edit-link"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </a>
+  );
 };
 
 const LineLink = ({
@@ -73,7 +104,7 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
+export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
@@ -243,15 +274,27 @@ export const Line = ({ text, isTitle, isJsonView }: LineProps) => {
     <div class="line-wrap">
       <div class={classNames.join(" ")}>
         {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
-        <span class={contentClassNames.join(" ")} style={contentStyle}>
-          {charElems.length > 0 ? charElems : <br />}
-        </span>
+        <ScrapboxLineContent
+          projectName={projectName}
+          docTitle={text}
+          isTitle={isTitle}
+        >
+          <span class={contentClassNames.join(" ")} style={contentStyle}>
+            {charElems.length > 0 ? charElems : <br />}
+          </span>
+        </ScrapboxLineContent>
       </div>
     </div>
   );
 };
 
-export default function HTextDoc({ text }: { text: string }) {
+export default function HTextDoc({
+  projectName,
+  text,
+}: {
+  projectName: string;
+  text: string;
+}) {
   if (!IS_BROWSER) {
     return <div />;
   }
@@ -261,7 +304,13 @@ export default function HTextDoc({ text }: { text: string }) {
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
     lineElems.push(
-      <Line text={line} key={idx} isTitle={idx === 0} isJsonView={false} />
+      <Line
+        text={line}
+        key={idx}
+        isTitle={idx === 0}
+        isJsonView={false}
+        projectName={projectName}
+      />
     );
   }
   return (

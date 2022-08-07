@@ -9,6 +9,15 @@ import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
 
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
+const getScrapboxProjectName = (objectName: string): string => {
+  const toks = objectName.split("/");
+  if (toks.length !== 3) {
+    console.error("invalid object name");
+    return "";
+  }
+  return toks[0];
+};
+
 export const handler = {
   async GET(_, ctx) {
     const docTitle = decodeURIComponent(ctx.params.docId);
@@ -18,12 +27,14 @@ export const handler = {
       : "";
     let docText = "";
     const textUrl = `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.txt`;
+    const projectName = getScrapboxProjectName(objectNameWithoutExt);
     const res = await fetch(textUrl, { method: "GET", redirect: "follow" });
     if (res.ok) {
       docText = await res.text();
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
+        projectName,
         docTitle,
         docText,
       })
@@ -32,10 +43,16 @@ export const handler = {
 };
 
 export default function DocTextPage(props: PageProps) {
-  const { docId, docTitle, docText } = props.data;
+  const { projectName, docId, docTitle, docText } = props.data;
+  const title = projectName ? `${docTitle} - ${projectName}` : docTitle;
+
+  const Divider = () => {
+    return <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>;
+  };
+
   return (
     <div data-doc-id={docId}>
-      <title>{docTitle}</title>
+      <title>{title}</title>
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -55,29 +72,29 @@ export default function DocTextPage(props: PageProps) {
         }}
       >
         <div class={tw`text-sm`}>
-          <a href="/" class={tw`text-blue-600`}>
-            New notes
-          </a>{" "}
+          <a href="/" class="menu-link">
+            Home
+          </a>
         </div>
         <div class={tw`px-2 text-sm`}>
           <span>text</span>
-          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <Divider />
           <a
             href={`/docs/hjson/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
+            class="menu-link"
           >
             json
           </a>
-          <span class={tw`text-gray-400`}>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <Divider />
           <a
             href={`/docs/pdf/${encodeURIComponent(docTitle)}`}
-            class={tw`text-blue-600`}
+            class="menu-link"
           >
             pdf
           </a>
         </div>
       </div>
-      <HTextDoc text={docText} />
+      <HTextDoc text={docText} projectName={projectName} />
     </div>
   );
 }
