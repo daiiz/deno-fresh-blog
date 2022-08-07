@@ -46,7 +46,7 @@ export default function DocPage(props: PageProps) {
       >
         <div class={tw`text-sm`}>
           <a href="/" class="menu-link">
-            New notes
+            Home
           </a>{" "}
           › {title}
         </div>
