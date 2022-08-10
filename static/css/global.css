@@ -208,5 +208,26 @@
 }
 
 .preview-area {
-  display: none;
+  /* display: none; */
+}
+
+.preview-area iframe {
+  width: 100%;
+  /* border: 2px solid #8f6b00; */
+  /* background-color: #fef7e0; */
+  /* W3C Draft */
+  border: 2px solid #dfcb52;
+  background-color: #fcfaee;
+  margin-left: -10px;
+  box-sizing: content-box;
+  border-radius: 2px;
+  user-select: none;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+a.active-frame {
+  border-bottom: 2px solid #dfcb52;
+  /* background-color: #fcfaee; */
+  /* border-radius: 2px; */
 }

@@ -1,5 +1,6 @@
 /** @jsx h */
 import { h, Fragment } from "preact";
+import { useEffect } from "preact/hooks";
 import { useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
@@ -7,6 +8,8 @@ import {
   getGyazoThumbnailUrl,
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
+
+let iframeTimer = null;
 
 type LineProps = {
   text: string;
@@ -109,7 +112,6 @@ const LineScrapboxPageLink = ({
   isIcon,
   previewAreaId,
 }: LineScrapboxPageLinkProps) => {
-  console.log(previewAreaId);
   if (!projectName || !title) {
     return title;
   }
@@ -121,10 +123,30 @@ const LineScrapboxPageLink = ({
   const encodedTitle = encodeURIComponent(title);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
 
-  const onClick = (e: MouseEvent) => {
+  const onClick = async (e: MouseEvent) => {
     if (!e.metaKey && !e.ctrlKey) {
       e.preventDefault();
       console.log("previewAreaId:", previewAreaId);
+      // 仮実装
+      const a = e.target;
+      const previewArea = document.getElementById(previewAreaId);
+      if (previewArea && previewArea.childElementCount === 0) {
+        const url = "/docs/htext/%E9%9B%91%E8%A8%98?mode=frame";
+        const iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.onload = () => {
+          iframeTimer = setInterval(() => {
+            const h = 2 + iframe.contentWindow.document.body.scrollHeight;
+            iframe.style.height = `${h}px`;
+          }, 300);
+        };
+        previewArea.appendChild(iframe);
+        a.classList.add("active-frame");
+      } else if (previewArea.childElementCount > 0) {
+        clearInterval(iframeTimer);
+        previewArea.innerHTML = "";
+        a.classList.remove("active-frame");
+      }
       return;
     }
   };
@@ -394,39 +416,57 @@ export const Line = ({
   const contentStyle = {
     marginLeft: `${spaceLen * spaceUnitPx}px`,
   };
+  const TabChars = () => {
+    return tabCharElems.length ? (
+      <span class="indent">{tabCharElems}</span>
+    ) : (
+      ""
+    );
+  };
   return (
-    <div class="line-wrap">
-      <div class={classNames.join(" ")}>
-        {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
-        <ScrapboxLineContent
-          projectName={projectName}
-          docTitle={text}
-          isTitle={isTitle}
-        >
-          <span class={contentClassNames.join(" ")} style={contentStyle}>
-            {charElems.length > 0 ? charElems : <br />}
-          </span>
-        </ScrapboxLineContent>
+    <Fragment>
+      <div class="line-wrap">
+        <div class={classNames.join(" ")}>
+          <TabChars />
+          <ScrapboxLineContent
+            projectName={projectName}
+            docTitle={text}
+            isTitle={isTitle}
+          >
+            <span class={contentClassNames.join(" ")} style={contentStyle}>
+              {charElems.length > 0 ? charElems : <br />}
+            </span>
+          </ScrapboxLineContent>
+        </div>
       </div>
-    </div>
+      <div>
+        <div className="preview-area" id={previewAreaId} style={contentStyle} />
+      </div>
+    </Fragment>
   );
 };
 
 export default function HTextDoc({
   projectName,
   text,
+  mode,
 }: {
   projectName: string;
   text: string;
+  mode: "frame" | "";
 }) {
   if (!IS_BROWSER) {
     return <div />;
   }
+
   // Helpfeel記法は索引的に利用したいので本文には表示しない
   const lines = text.split("\n").filter((x) => !x.trim().startsWith("? "));
 
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
+    if (mode === "frame" && idx === 0) {
+      continue;
+    }
     const previewAreaId = `preview-${idx}`;
     lineElems.push(
       <Line
@@ -436,13 +476,17 @@ export default function HTextDoc({
         isJsonView={false}
         projectName={projectName}
         previewAreaId={previewAreaId}
-      />,
-      <div className="preview-area" id={previewAreaId} />
+      />
     );
   }
+  const style =
+    mode === "frame" ? { padding: "4px 8px" } : { padding: "0 8px" };
+  const preStyle = mode === "frame" ? { margin: "0 auto" } : {};
   return (
-    <div class="textdoc" style={{ padding: "0 8px" }}>
-      <div class="pre">{lineElems}</div>
+    <div class="textdoc" style={style}>
+      <div class="pre" style={preStyle}>
+        {lineElems}
+      </div>
     </div>
   );
 }

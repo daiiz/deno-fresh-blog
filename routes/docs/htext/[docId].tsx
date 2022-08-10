@@ -11,7 +11,9 @@ import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
 export const handler = {
-  async GET(_, ctx) {
+  async GET(req, ctx) {
+    const parsedUrl = new URL(req.url);
+    const searchParams = new URLSearchParams(parsedUrl.search);
     const docTitle = decodeURIComponent(ctx.params.docId);
     const article = await findLatestArticle(docTitle);
     const objectNameWithoutExt = article
@@ -26,6 +28,7 @@ export const handler = {
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
+        mode: searchParams.get("mode") || "",
         projectName,
         docTitle,
         docText,
@@ -35,7 +38,7 @@ export const handler = {
 };
 
 export default function DocTextPage(props: PageProps) {
-  const { projectName, docId, docTitle, docText } = props.data;
+  const { mode, projectName, docId, docTitle, docText } = props.data;
   const title = projectName ? `${docTitle} - ${projectName}` : docTitle;
 
   const Divider = () => {
@@ -61,6 +64,7 @@ export default function DocTextPage(props: PageProps) {
           backgroundColor: "#f9f9fa",
           justifyContent: "space-between",
           userSelect: "none",
+          display: mode === "frame" ? "none" : "flex",
         }}
       >
         <div class={tw`text-sm`}>
@@ -86,7 +90,7 @@ export default function DocTextPage(props: PageProps) {
           </a>
         </div>
       </div>
-      <HTextDoc text={docText} projectName={projectName} />
+      <HTextDoc text={docText} projectName={projectName} mode={mode} />
     </div>
   );
 }
