@@ -1,5 +1,6 @@
 /** @jsx h */
-import { h } from "preact";
+import { h, Fragment } from "preact";
+import { useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
   isGyazoBraketing,
@@ -56,19 +57,62 @@ const ScrapboxLineContent = ({
   );
 };
 
-const LineScrapboxPageLink = ({
+const LineScrapboxPageIcon = ({
   projectName,
   title,
 }: {
   projectName: string;
   title: string;
 }) => {
+  const [error, setError] = useState(false);
+  const encodeTitle = encodeURIComponent(title);
+  const iconUrl = `https://scrapbox.io/api/pages/${projectName}/${encodeTitle}/icon`;
+  const iconNotationElems = [];
+  for (const [idx, char] of `[${encodeTitle}.icon]`.split("").entries()) {
+    iconNotationElems.push(
+      <span key={idx} class="icon-notation-char">
+        {char}
+      </span>
+    );
+  }
+  return (
+    <Fragment>
+      <span class="image-notation icon-notation">{iconNotationElems}</span>
+      <span class="doc-icon-container">
+        {!error ? (
+          <img
+            src={iconUrl}
+            class="doc-scrapbox-icon"
+            onError={() => {
+              setError(true);
+            }}
+          />
+        ) : (
+          <span class="doc-scrapbox-icon-label">({encodeTitle})</span>
+        )}
+      </span>
+    </Fragment>
+  );
+};
+
+const LineScrapboxPageLink = ({
+  projectName,
+  title,
+  isIcon,
+}: {
+  projectName: string;
+  title: string;
+  isIcon: boolean;
+}) => {
   if (!projectName || !title) {
     return title;
   }
-  const encodedTitle = encodeURIComponent(
-    title.endsWith(".icon") ? title.slice(0, -5) : title
-  );
+
+  if (isIcon) {
+    return <LineScrapboxPageIcon projectName={projectName} title={title} />;
+  }
+
+  const encodedTitle = encodeURIComponent(title);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
 
   const onClick = (e: MouseEvent) => {
@@ -265,20 +309,29 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
         continue;
       } else {
         if (projectName && linkLikeRes.title) {
+          const isIcon = linkLikeRes.title.endsWith(".icon");
+          const pageTitle = isIcon
+            ? linkLikeRes.title.slice(0, -5)
+            : linkLikeRes.title;
           // Scrapbox bracketing
-          charElems.push(
-            <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
-          );
+          if (!isIcon) {
+            charElems.push(
+              <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
+            );
+          }
           charElems.push(
             <LineScrapboxPageLink
               projectName={projectName}
-              title={linkLikeRes.title}
+              title={pageTitle}
+              isIcon={isIcon}
               key={idx + "_" + linkLikeRes.title}
             />
           );
-          charElems.push(
-            <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
-          );
+          if (!isIcon) {
+            charElems.push(
+              <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
+            );
+          }
           idx += subStr.length - 1;
           continue;
         }
