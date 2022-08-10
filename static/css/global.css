@@ -176,6 +176,7 @@
 
 .doc-icon-container img {
   background: transparent;
+  opacity: 0.8;
 }
 
 .menu-link {
