@@ -11,6 +11,7 @@ import {
 type LineProps = {
   text: string;
   projectName: string;
+  previewAreaId: string;
   isTitle?: boolean;
   isJsonView?: boolean;
 };
@@ -25,6 +26,13 @@ type LineLinkProps = {
   url: string;
   imageUrl: string;
   isExternal: boolean;
+};
+
+type LineScrapboxPageLinkProps = {
+  projectName: string;
+  title: string;
+  isIcon: boolean;
+  previewAreaId: string;
 };
 
 type ScrapboxLineContentProps = {
@@ -99,11 +107,9 @@ const LineScrapboxPageLink = ({
   projectName,
   title,
   isIcon,
-}: {
-  projectName: string;
-  title: string;
-  isIcon: boolean;
-}) => {
+  previewAreaId,
+}: LineScrapboxPageLinkProps) => {
+  console.log(previewAreaId);
   if (!projectName || !title) {
     return title;
   }
@@ -117,8 +123,9 @@ const LineScrapboxPageLink = ({
 
   const onClick = (e: MouseEvent) => {
     if (!e.metaKey && !e.ctrlKey) {
-      // e.preventDefault();
-      // return;
+      e.preventDefault();
+      console.log("previewAreaId:", previewAreaId);
+      return;
     }
   };
 
@@ -182,7 +189,13 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
+export const Line = ({
+  text,
+  isTitle,
+  isJsonView,
+  projectName,
+  previewAreaId,
+}: LineProps) => {
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
@@ -325,6 +338,7 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
               title={pageTitle}
               isIcon={isIcon}
               key={idx + "_" + linkLikeRes.title}
+              previewAreaId={previewAreaId}
             />
           );
           if (!isIcon) {
@@ -413,6 +427,7 @@ export default function HTextDoc({
 
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
+    const previewAreaId = `preview-${idx}`;
     lineElems.push(
       <Line
         text={line}
@@ -420,7 +435,9 @@ export default function HTextDoc({
         isTitle={idx === 0}
         isJsonView={false}
         projectName={projectName}
-      />
+        previewAreaId={previewAreaId}
+      />,
+      <div className="preview-area" id={previewAreaId} />
     );
   }
   return (

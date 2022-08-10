@@ -206,3 +206,7 @@
   user-select: none;
   opacity: 0.95;
 }
+
+.preview-area {
+  display: none;
+}
