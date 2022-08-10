@@ -1,5 +1,6 @@
 /** @jsx h */
 import { h } from "preact";
+import { useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
   isGyazoBraketing,
@@ -63,15 +64,25 @@ const LineScrapboxPageIcon = ({
   projectName: string;
   title: string;
 }) => {
+  const [error, setError] = useState(false);
   const encodeTitle = encodeURIComponent(title);
   const iconUrl = `https://scrapbox.io/api/pages/${projectName}/${encodeTitle}/icon`;
-  // TODO: onError handler
   return (
     <span class="doc-icon-container">
       <span class="image-notation icon-notation">
         <span>[{encodeTitle}.icon]</span>
       </span>
-      <img src={iconUrl} class="doc-scrapbox-icon" />
+      {!error ? (
+        <img
+          src={iconUrl}
+          class="doc-scrapbox-icon"
+          onError={() => {
+            setError(true);
+          }}
+        />
+      ) : (
+        <span class="doc-scrapbox-icon-label">({encodeTitle})</span>
+      )}
     </span>
   );
 };
