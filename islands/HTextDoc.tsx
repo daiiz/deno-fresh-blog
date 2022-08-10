@@ -130,9 +130,21 @@ const LineScrapboxPageLink = ({
       // 仮実装
       const a = e.target;
       const previewArea = document.getElementById(previewAreaId);
-      if (previewArea && previewArea.childElementCount === 0) {
+      const activeLinkElems = document.querySelectorAll(".active-frame");
+      let prevTitle = "";
+      for (const elem of activeLinkElems) {
+        elem.classList.remove("active-frame");
+        prevTitle = elem.innerText;
+        const iframe = document.querySelector(
+          `iframe[data-title="${prevTitle}"]`
+        );
+        iframe.remove();
+        clearInterval(iframeTimer);
+      }
+      if (previewArea && prevTitle !== title) {
         const url = "/docs/htext/%E9%9B%91%E8%A8%98?mode=frame";
         const iframe = document.createElement("iframe");
+        iframe.dataset.title = title;
         iframe.src = url;
         iframe.onload = () => {
           iframeTimer = setInterval(() => {
@@ -142,10 +154,6 @@ const LineScrapboxPageLink = ({
         };
         previewArea.appendChild(iframe);
         a.classList.add("active-frame");
-      } else if (previewArea.childElementCount > 0) {
-        clearInterval(iframeTimer);
-        previewArea.innerHTML = "";
-        a.classList.remove("active-frame");
       }
       return;
     }
