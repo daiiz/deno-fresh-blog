@@ -63,7 +63,17 @@ const LineScrapboxPageIcon = ({
   projectName: string;
   title: string;
 }) => {
-  return <span>({title})</span>;
+  const encodeTitle = encodeURIComponent(title);
+  const iconUrl = `https://scrapbox.io/api/pages/${projectName}/${encodeTitle}/icon`;
+  // TODO: onError handler
+  return (
+    <span class="doc-icon-container">
+      <span class="image-notation icon-notation">
+        <span>[{encodeTitle}.icon]</span>
+      </span>
+      <img src={iconUrl} class="doc-scrapbox-icon" />
+    </span>
+  );
 };
 
 const LineScrapboxPageLink = ({

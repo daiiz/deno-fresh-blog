@@ -1,4 +1,5 @@
-.doc-link-container {
+.doc-link-container,
+.doc-icon-container {
   display: inline;
   position: relative;
 }
@@ -141,6 +142,10 @@
   color: rgba(0, 0, 0, 0.1);
 }
 
+.icon-notation span {
+  color: transparent;
+}
+
 .image-notation a:hover {
   color: #034575;
 }
@@ -151,13 +156,18 @@
   max-height: 300px;
 }
 
-.image-container img {
+.image-container img,
+.doc-icon-container img {
   user-select: none;
   -webkit-user-drag: none;
   -moz-user-drag: none;
   /* 落ち着いた感じに見せるテクニック */
   opacity: 0.95;
   background: rgba(84, 80, 78, 0.05);
+}
+
+.doc-icon-container img {
+  background: transparent;
 }
 
 .menu-link {
@@ -172,4 +182,11 @@
 
 .doc-scrapbox-link:hover {
   color: #034575;
+}
+
+.doc-scrapbox-icon {
+  position: relative;
+  display: inline-block;
+  height: 1.2em;
+  top: -0.2em;
 }
