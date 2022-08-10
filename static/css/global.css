@@ -142,6 +142,13 @@
   color: rgba(0, 0, 0, 0.1);
 }
 
+.icon-notation {
+  position: relative;
+  width: 1px;
+  margin-left: -1px;
+  overflow: hidden;
+}
+
 .icon-notation span {
   color: transparent;
   font-size: 10px;

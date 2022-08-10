@@ -1,5 +1,5 @@
 /** @jsx h */
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
@@ -67,23 +67,31 @@ const LineScrapboxPageIcon = ({
   const [error, setError] = useState(false);
   const encodeTitle = encodeURIComponent(title);
   const iconUrl = `https://scrapbox.io/api/pages/${projectName}/${encodeTitle}/icon`;
-  return (
-    <span class="doc-icon-container">
-      <span class="image-notation icon-notation">
-        <span>[{encodeTitle}.icon]</span>
+  const iconNotationElems = [];
+  for (const [idx, char] of `[${encodeTitle}.icon]`.split("").entries()) {
+    iconNotationElems.push(
+      <span key={idx} class="icon-notation-char">
+        {char}
       </span>
-      {!error ? (
-        <img
-          src={iconUrl}
-          class="doc-scrapbox-icon"
-          onError={() => {
-            setError(true);
-          }}
-        />
-      ) : (
-        <span class="doc-scrapbox-icon-label">({encodeTitle})</span>
-      )}
-    </span>
+    );
+  }
+  return (
+    <Fragment>
+      <span class="image-notation icon-notation">{iconNotationElems}</span>
+      <span class="doc-icon-container">
+        {!error ? (
+          <img
+            src={iconUrl}
+            class="doc-scrapbox-icon"
+            onError={() => {
+              setError(true);
+            }}
+          />
+        ) : (
+          <span class="doc-scrapbox-icon-label">({encodeTitle})</span>
+        )}
+      </span>
+    </Fragment>
   );
 };
 
