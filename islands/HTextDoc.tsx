@@ -56,19 +56,34 @@ const ScrapboxLineContent = ({
   );
 };
 
-const LineScrapboxPageLink = ({
+const LineScrapboxPageIcon = ({
   projectName,
   title,
 }: {
   projectName: string;
   title: string;
 }) => {
+  return <span>({title})</span>;
+};
+
+const LineScrapboxPageLink = ({
+  projectName,
+  title,
+  isIcon,
+}: {
+  projectName: string;
+  title: string;
+  isIcon: boolean;
+}) => {
   if (!projectName || !title) {
     return title;
   }
-  const encodedTitle = encodeURIComponent(
-    title.endsWith(".icon") ? title.slice(0, -5) : title
-  );
+
+  if (isIcon) {
+    return <LineScrapboxPageIcon projectName={projectName} title={title} />;
+  }
+
+  const encodedTitle = encodeURIComponent(title);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
 
   const onClick = (e: MouseEvent) => {
@@ -265,20 +280,29 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
         continue;
       } else {
         if (projectName && linkLikeRes.title) {
+          const isIcon = linkLikeRes.title.endsWith(".icon");
+          const pageTitle = isIcon
+            ? linkLikeRes.title.slice(0, -5)
+            : linkLikeRes.title;
           // Scrapbox bracketing
-          charElems.push(
-            <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
-          );
+          if (!isIcon) {
+            charElems.push(
+              <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
+            );
+          }
           charElems.push(
             <LineScrapboxPageLink
               projectName={projectName}
-              title={linkLikeRes.title}
+              title={pageTitle}
+              isIcon={isIcon}
               key={idx + "_" + linkLikeRes.title}
             />
           );
-          charElems.push(
-            <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
-          );
+          if (!isIcon) {
+            charElems.push(
+              <LineChar char="]" key={idx + "_]"} isJsonView={isJsonView} />
+            );
+          }
           idx += subStr.length - 1;
           continue;
         }
