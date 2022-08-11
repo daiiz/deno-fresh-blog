@@ -10,6 +10,7 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
   const page = decodeURIComponent(searchParams.get("page"));
   // fetch scrapbox page text
   const url = `https://scrapbox.io/api/pages/${project}/${page}/text`;
+  console.log("...url...", url);
   const res = await fetch(url);
   if (!res.ok) {
     return new Response("Bad Request", { status: 400 });
