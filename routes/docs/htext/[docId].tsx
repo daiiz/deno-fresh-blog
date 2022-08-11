@@ -13,22 +13,33 @@ const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 export const handler = {
   async GET(req, ctx) {
     const parsedUrl = new URL(req.url);
+    // parse query
     const searchParams = new URLSearchParams(parsedUrl.search);
+    const origin = parsedUrl.origin;
+    const mode = searchParams.get("mode") || "";
+    const project = searchParams.get("project") || "";
+    const source = mode === "frame" ? "scrapbox" : "";
+
     const docTitle = decodeURIComponent(ctx.params.docId);
     const article = await findLatestArticle(docTitle);
     const objectNameWithoutExt = article
       ? article.gcsObjectName.replace(/\.pdf$/, "")
       : "";
     let docText = "";
-    const textUrl = `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.txt`;
-    const projectName = getScrapboxProjectName(objectNameWithoutExt);
+    const textUrl =
+      source === "scrapbox" && !!project
+        ? `${origin}/api/scrapbox/page?project=${project}&page=${ctx.params.docId}`
+        : `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.txt`;
+    const projectName = project || getScrapboxProjectName(objectNameWithoutExt);
     const res = await fetch(textUrl, { method: "GET", redirect: "follow" });
     if (res.ok) {
       docText = await res.text();
+    } else {
+      return new Response("Bad Request", { status: 400 });
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
-        mode: searchParams.get("mode") || "",
+        mode,
         projectName,
         docTitle,
         docText,

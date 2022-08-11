@@ -142,11 +142,19 @@ const LineScrapboxPageLink = ({
         clearInterval(iframeTimer);
       }
       if (previewArea && prevTitle !== title) {
-        const url = "/docs/htext/%E9%9B%91%E8%A8%98?mode=frame";
+        const eTitle = encodeURIComponent(title);
+        const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
         const iframe = document.createElement("iframe");
         iframe.dataset.title = title;
         iframe.src = url;
         iframe.onload = () => {
+          if (iframe.contentWindow.document.title) {
+            iframe.style.display = "block";
+          } else {
+            // Error
+            // window.open(scrapboxUrl);
+            a.classList.remove("active-frame");
+          }
           iframeTimer = setInterval(() => {
             const h = 2 + iframe.contentWindow.document.body.scrollHeight;
             iframe.style.height = `${h}px`;
