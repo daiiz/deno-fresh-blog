@@ -18,6 +18,7 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
     },
   });
   if (!res.ok) {
+    console.log("$", res);
     return new Response("Bad Request:" + url, { status: 400 });
     // return new Response("", { headers });
   }
