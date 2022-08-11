@@ -1,5 +1,6 @@
 /** @jsx h */
 import { h, Fragment } from "preact";
+import { useEffect } from "preact/hooks";
 import { useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import {
@@ -8,9 +9,12 @@ import {
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
 
+let iframeTimer = null;
+
 type LineProps = {
   text: string;
   projectName: string;
+  previewAreaId: string;
   isTitle?: boolean;
   isJsonView?: boolean;
 };
@@ -25,6 +29,13 @@ type LineLinkProps = {
   url: string;
   imageUrl: string;
   isExternal: boolean;
+};
+
+type LineScrapboxPageLinkProps = {
+  projectName: string;
+  title: string;
+  isIcon: boolean;
+  previewAreaId: string;
 };
 
 type ScrapboxLineContentProps = {
@@ -99,11 +110,8 @@ const LineScrapboxPageLink = ({
   projectName,
   title,
   isIcon,
-}: {
-  projectName: string;
-  title: string;
-  isIcon: boolean;
-}) => {
+  previewAreaId,
+}: LineScrapboxPageLinkProps) => {
   if (!projectName || !title) {
     return title;
   }
@@ -115,10 +123,60 @@ const LineScrapboxPageLink = ({
   const encodedTitle = encodeURIComponent(title);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
 
-  const onClick = (e: MouseEvent) => {
+  const onClick = async (e: MouseEvent) => {
     if (!e.metaKey && !e.ctrlKey) {
-      // e.preventDefault();
-      // return;
+      e.preventDefault();
+      console.log("previewAreaId:", previewAreaId);
+      // 仮実装
+      const a = e.target;
+      const previewArea = document.getElementById(previewAreaId);
+      const activeLinkElems = document.querySelectorAll(".active-frame");
+      let prevTitle = "";
+      for (const elem of activeLinkElems) {
+        elem.classList.remove("active-frame");
+        prevTitle = elem.innerText;
+        const iframe = document.querySelector(
+          `iframe[data-title="${prevTitle}"]`
+        );
+        iframe.remove();
+        document.onmouseover = null;
+        clearInterval(iframeTimer);
+      }
+      if (previewArea && prevTitle !== title) {
+        const eTitle = encodeURIComponent(title);
+        const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
+        const iframe = document.createElement("iframe");
+        iframe.dataset.title = title;
+        iframe.src = url;
+        iframe.onload = () => {
+          if (iframe.contentWindow.document.title) {
+            iframe.style.display = "block";
+          } else {
+            // Error
+            a.classList.remove("active-frame");
+          }
+          iframeTimer = setInterval(() => {
+            const h = 2 + iframe.contentWindow.document.body.scrollHeight;
+            iframe.style.height = `${h}px`;
+          }, 200);
+        };
+        // document.onmouseover = (e) => {
+        //   console.log(".....!");
+        //   if (e.target.tagName === "IFRAME") {
+        //     document.body.style.background = "transparent";
+        //     e.target.contentWindow.document.body.style.background =
+        //       "rgb(252, 250, 238)";
+        //   } else {
+        //     if (window !== window.parent) {
+        //       document.body.style.background = "rgb(252, 250, 238)";
+        //     }
+        //     iframe.contentWindow.document.body.style.background = "transparent";
+        //   }
+        // };
+        previewArea.appendChild(iframe);
+        a.classList.add("active-frame");
+      }
+      return;
     }
   };
 
@@ -182,7 +240,13 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
   return <span class={classNames.join(" ")}>{char}</span>;
 };
 
-export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
+export const Line = ({
+  text,
+  isTitle,
+  isJsonView,
+  projectName,
+  previewAreaId,
+}: LineProps) => {
   const classNames = ["line"];
   const contentClassNames = ["content"];
 
@@ -325,6 +389,7 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
               title={pageTitle}
               isIcon={isIcon}
               key={idx + "_" + linkLikeRes.title}
+              previewAreaId={previewAreaId}
             />
           );
           if (!isIcon) {
@@ -380,39 +445,58 @@ export const Line = ({ text, isTitle, isJsonView, projectName }: LineProps) => {
   const contentStyle = {
     marginLeft: `${spaceLen * spaceUnitPx}px`,
   };
+  const TabChars = () => {
+    return tabCharElems.length ? (
+      <span class="indent">{tabCharElems}</span>
+    ) : (
+      ""
+    );
+  };
   return (
-    <div class="line-wrap">
-      <div class={classNames.join(" ")}>
-        {tabCharElems.length ? <span class="indent">{tabCharElems}</span> : ""}
-        <ScrapboxLineContent
-          projectName={projectName}
-          docTitle={text}
-          isTitle={isTitle}
-        >
-          <span class={contentClassNames.join(" ")} style={contentStyle}>
-            {charElems.length > 0 ? charElems : <br />}
-          </span>
-        </ScrapboxLineContent>
+    <Fragment>
+      <div class="line-wrap">
+        <div class={classNames.join(" ")}>
+          <TabChars />
+          <ScrapboxLineContent
+            projectName={projectName}
+            docTitle={text}
+            isTitle={isTitle}
+          >
+            <span class={contentClassNames.join(" ")} style={contentStyle}>
+              {charElems.length > 0 ? charElems : <br />}
+            </span>
+          </ScrapboxLineContent>
+        </div>
       </div>
-    </div>
+      <div>
+        <div className="preview-area" id={previewAreaId} style={contentStyle} />
+      </div>
+    </Fragment>
   );
 };
 
 export default function HTextDoc({
   projectName,
   text,
+  mode,
 }: {
   projectName: string;
   text: string;
+  mode: "frame" | "";
 }) {
   if (!IS_BROWSER) {
     return <div />;
   }
+
   // Helpfeel記法は索引的に利用したいので本文には表示しない
   const lines = text.split("\n").filter((x) => !x.trim().startsWith("? "));
 
   const lineElems = [];
   for (const [idx, line] of lines.entries()) {
+    if (mode === "frame" && idx === 0) {
+      continue;
+    }
+    const previewAreaId = `preview-${idx}`;
     lineElems.push(
       <Line
         text={line}
@@ -420,12 +504,18 @@ export default function HTextDoc({
         isTitle={idx === 0}
         isJsonView={false}
         projectName={projectName}
+        previewAreaId={previewAreaId}
       />
     );
   }
+  const style =
+    mode === "frame" ? { padding: "4px 8px" } : { padding: "0 8px" };
+  const preStyle = mode === "frame" ? { margin: "0 auto" } : {};
   return (
-    <div class="textdoc" style={{ padding: "0 8px" }}>
-      <div class="pre">{lineElems}</div>
+    <div class="textdoc" style={style}>
+      <div class="pre" style={preStyle}>
+        {lineElems}
+      </div>
     </div>
   );
 }

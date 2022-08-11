@@ -206,3 +206,34 @@
   user-select: none;
   opacity: 0.95;
 }
+
+.preview-area {
+  /* display: none; */
+}
+
+.preview-area iframe {
+  display: none;
+  width: 100%;
+  /* border: 2px solid #8f6b00; */
+  /* background-color: #fef7e0; */
+  /* W3C Draft */
+  /* border: 2px solid #dfcb52; */
+  border-left: 6px solid #dfcb52;
+  /* background-color: rgb(252, 250, 238); */
+  /* margin-left: -10px; */
+  box-sizing: content-box;
+  /* border-radius: 2px; */
+  user-select: none;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+iframe.hover-frame {
+  background-color: rgb(252, 250, 238);
+}
+
+a.active-frame {
+  border-bottom: 2px solid #dfcb52;
+  /* background-color: #fcfaee; */
+  /* border-radius: 2px; */
+}

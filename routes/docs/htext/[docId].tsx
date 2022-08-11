@@ -11,21 +11,37 @@ import OpenGraphProtocol from "../../../islands/OpenGraphProtocol.tsx";
 const bucketName = Deno.env.get("GCS_BUCKET_NAME");
 
 export const handler = {
-  async GET(_, ctx) {
+  async GET(req, ctx) {
+    const parsedUrl = new URL(req.url);
+    // parse query
+    const searchParams = new URLSearchParams(parsedUrl.search);
+    const origin = parsedUrl.origin;
+    const mode = searchParams.get("mode") || "";
+    const project = searchParams.get("project") || "";
+    const source = mode === "frame" ? "scrapbox" : "";
+
     const docTitle = decodeURIComponent(ctx.params.docId);
     const article = await findLatestArticle(docTitle);
     const objectNameWithoutExt = article
       ? article.gcsObjectName.replace(/\.pdf$/, "")
       : "";
     let docText = "";
-    const textUrl = `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.txt`;
-    const projectName = getScrapboxProjectName(objectNameWithoutExt);
+    const textUrl =
+      source === "scrapbox" && !!project
+        ? `https://scrapbox.io/api/pages/${project}/${ctx.params.docId}/text`
+        : `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.txt`;
+    const projectName = project || getScrapboxProjectName(objectNameWithoutExt);
     const res = await fetch(textUrl, { method: "GET", redirect: "follow" });
     if (res.ok) {
       docText = await res.text();
+    } else {
+      return new Response("Bad Request", {
+        status: 400,
+      });
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
+        mode,
         projectName,
         docTitle,
         docText,
@@ -35,7 +51,7 @@ export const handler = {
 };
 
 export default function DocTextPage(props: PageProps) {
-  const { projectName, docId, docTitle, docText } = props.data;
+  const { mode, projectName, docId, docTitle, docText } = props.data;
   const title = projectName ? `${docTitle} - ${projectName}` : docTitle;
 
   const Divider = () => {
@@ -61,6 +77,7 @@ export default function DocTextPage(props: PageProps) {
           backgroundColor: "#f9f9fa",
           justifyContent: "space-between",
           userSelect: "none",
+          display: mode === "frame" ? "none" : "flex",
         }}
       >
         <div class={tw`text-sm`}>
@@ -86,7 +103,7 @@ export default function DocTextPage(props: PageProps) {
           </a>
         </div>
       </div>
-      <HTextDoc text={docText} projectName={projectName} />
+      <HTextDoc text={docText} projectName={projectName} mode={mode} />
     </div>
   );
 }
