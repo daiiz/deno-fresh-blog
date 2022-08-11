@@ -13,7 +13,7 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
   console.log("...url...", url);
   const res = await fetch(url);
   if (!res.ok) {
-    return new Response("Bad Request", { status: 400 });
+    return new Response("Bad Request:" + url, { status: 400 });
     // return new Response("", { headers });
   }
   const text = await res.text();
