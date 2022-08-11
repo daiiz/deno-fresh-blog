@@ -11,7 +11,7 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
   // fetch scrapbox page text
   const url = `https://scrapbox.io/api/pages/${project}/${page}/text`;
   console.log("...url...", url);
-  const res = await fetch(url);
+  const res = await fetch(url, { method: "GET" });
   if (!res.ok) {
     return new Response("Bad Request:" + url, { status: 400 });
     // return new Response("", { headers });
