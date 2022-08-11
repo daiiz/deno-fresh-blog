@@ -158,7 +158,7 @@ const LineScrapboxPageLink = ({
           iframeTimer = setInterval(() => {
             const h = 2 + iframe.contentWindow.document.body.scrollHeight;
             iframe.style.height = `${h}px`;
-          }, 300);
+          }, 200);
         };
         previewArea.appendChild(iframe);
         a.classList.add("active-frame");

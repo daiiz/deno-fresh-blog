@@ -217,15 +217,15 @@
   /* border: 2px solid #8f6b00; */
   /* background-color: #fef7e0; */
   /* W3C Draft */
-  border: 2px solid #dfcb52;
-  /* border-left: px solid #dfcb52; */
-  background-color: #fcfaee;
-  margin-left: -10px;
+  /* border: 2px solid #dfcb52; */
+  border-left: 6px solid #dfcb52;
+  /* background-color: rgb(252, 250, 238); */
+  /* margin-left: -10px; */
   box-sizing: content-box;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   user-select: none;
   overflow: hidden;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 a.active-frame {
