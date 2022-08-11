@@ -28,8 +28,7 @@ export const handler = {
     let docText = "";
     const textUrl =
       source === "scrapbox" && !!project
-        ? // ? `${origin}/api/scrapbox/page?project=${project}&page=${ctx.params.docId}`
-          `https://scrapbox.io/api/pages/${project}/${ctx.params.docId}/text`
+        ? `https://scrapbox.io/api/pages/${project}/${ctx.params.docId}/text`
         : `https://storage.googleapis.com/${bucketName}/${objectNameWithoutExt}.txt`;
     const projectName = project || getScrapboxProjectName(objectNameWithoutExt);
     const res = await fetch(textUrl, { method: "GET", redirect: "follow" });
