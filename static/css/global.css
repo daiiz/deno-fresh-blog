@@ -228,6 +228,10 @@
   margin-top: 6px;
 }
 
+iframe.hover-frame {
+  background-color: rgb(252, 250, 238);
+}
+
 a.active-frame {
   border-bottom: 2px solid #dfcb52;
   /* background-color: #fcfaee; */

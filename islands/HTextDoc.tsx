@@ -139,6 +139,7 @@ const LineScrapboxPageLink = ({
           `iframe[data-title="${prevTitle}"]`
         );
         iframe.remove();
+        document.onmouseover = null;
         clearInterval(iframeTimer);
       }
       if (previewArea && prevTitle !== title) {
@@ -160,6 +161,73 @@ const LineScrapboxPageLink = ({
             iframe.style.height = `${h}px`;
           }, 200);
         };
+        document.onmouseover = (e) => {
+          console.log(".....!");
+          if (e.target.tagName === "IFRAME") {
+            document.body.style.background = "transparent";
+            e.target.contentWindow.document.body.style.background =
+              "rgb(252, 250, 238)";
+          } else {
+            if (window !== window.parent) {
+              document.body.style.background = "rgb(252, 250, 238)";
+            }
+            iframe.contentWindow.document.body.style.background = "transparent";
+          }
+        };
+        // document.onmousemove = (e) => {
+        //   // console.log(
+        //   //   "E",
+        //   //   document.title,
+        //   //   e.target
+        //   //   // e.fromElement.closest("iframe")
+        //   // );
+        //   // document.body.style.background =
+        //   //   document.body.style.background === "transparent"
+        //   //     ? "green"
+        //   //     : "transparent";
+        //   iframe.contentWindow.document.body.style.background =
+        //     iframe.contentWindow.document.body.style.background ===
+        //     "transparent"
+        //       ? "green"
+        //       : "transparent";
+        // };
+        // iframe.onmouseleave = (e) => {
+        //   console.log(
+        //     "L",
+        //     iframe.dataset.title,
+        //     e.target,
+        //     e.fromElement.closest("iframe")
+        //   );
+        //   document.body.style.background = "transparent";
+        //   iframe.contentWindow.document.body.style.background = "red";
+        // };
+        // document.addEventListener("mouseenter", (e) => {
+        //   console.log(e.target.closest("iframe"));
+        // });
+        // iframe.onmouseover = () => {
+        //   iframe.classList.add("hover-frame");
+        //   console.log(title);
+        //   // const frames = document.querySelectorAll("iframe");
+        //   // for (const frame of frames) {
+        //   //   if (frame.dataset.title !== title) {
+        //   //     frame.classList.remove("hover-frame");
+        //   //   } else {
+        //   //     frame.classList.add("hover-frame");
+        //   //   }
+        //   // }
+        // };
+        // document.addEventListener("mouseout", (e) => {
+        //   const frames = document.querySelectorAll("iframe");
+        //   for (const frame of frames) {
+        //     console.log(frame);
+        //     if (frame.dataset.title !== title) {
+        //       frame.classList.remove("hover-frame");
+        //     }
+        //   }
+        // });
+        // iframe.onmouseout = () => {
+        //   iframe.classList.remove("hover-frame");
+        // };
         previewArea.appendChild(iframe);
         a.classList.add("active-frame");
       }
