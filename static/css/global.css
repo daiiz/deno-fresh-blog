@@ -217,6 +217,7 @@
   /* background-color: #fef7e0; */
   /* W3C Draft */
   border: 2px solid #dfcb52;
+  /* border-left: px solid #dfcb52; */
   background-color: #fcfaee;
   margin-left: -10px;
   box-sizing: content-box;
