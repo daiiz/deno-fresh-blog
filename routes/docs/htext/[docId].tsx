@@ -35,7 +35,9 @@ export const handler = {
     if (res.ok) {
       docText = await res.text();
     } else {
-      return new Response("Bad Request::" + textUrl, { status: 400 });
+      return new Response("Bad Request::" + textUrl + JSON.stringify(res), {
+        status: 400,
+      });
     }
     return ctx.render(
       Object.assign({}, ctx.params, {
