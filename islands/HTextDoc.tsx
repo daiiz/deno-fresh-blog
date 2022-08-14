@@ -160,19 +160,6 @@ const LineScrapboxPageLink = ({
             iframe.style.height = `${h}px`;
           }, 200);
         };
-        // document.onmouseover = (e) => {
-        //   console.log(".....!");
-        //   if (e.target.tagName === "IFRAME") {
-        //     document.body.style.background = "transparent";
-        //     e.target.contentWindow.document.body.style.background =
-        //       "rgb(252, 250, 238)";
-        //   } else {
-        //     if (window !== window.parent) {
-        //       document.body.style.background = "rgb(252, 250, 238)";
-        //     }
-        //     iframe.contentWindow.document.body.style.background = "transparent";
-        //   }
-        // };
         previewArea.appendChild(iframe);
         a.classList.add("active-frame");
       }
