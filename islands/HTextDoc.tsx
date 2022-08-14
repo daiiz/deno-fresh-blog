@@ -8,42 +8,15 @@ import {
   getGyazoThumbnailUrl,
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
+import {
+  LineProps,
+  LineCharProps,
+  LineLinkProps,
+  LineScrapboxPageLinkProps,
+  ScrapboxLineContentProps,
+} from "@islands-lib/types.ts";
 
 let iframeTimer = null;
-
-type LineProps = {
-  text: string;
-  projectName: string;
-  previewAreaId: string;
-  isTitle?: boolean;
-  isJsonView?: boolean;
-};
-
-type LineCharProps = {
-  char: string;
-  isJsonView?: boolean;
-};
-
-type LineLinkProps = {
-  title: string;
-  url: string;
-  imageUrl: string;
-  isExternal: boolean;
-};
-
-type LineScrapboxPageLinkProps = {
-  projectName: string;
-  title: string;
-  isIcon: boolean;
-  previewAreaId: string;
-};
-
-type ScrapboxLineContentProps = {
-  projectName: string;
-  docTitle: string;
-  children: any;
-  isTitle?: boolean;
-};
 
 const ScrapboxLineContent = ({
   projectName,
@@ -161,7 +134,10 @@ const LineScrapboxPageLink = ({
       const aElem = e.target;
       const previewArea = document.getElementById(previewAreaId);
       const prevTitle = detectCurrentIframe();
-      if (previewArea && prevTitle !== title) {
+      if (!previewArea) {
+        return;
+      }
+      if (prevTitle !== title) {
         const eTitle = encodeURIComponent(title);
         const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
         const iframe = document.createElement("iframe");
@@ -187,6 +163,10 @@ const LineScrapboxPageLink = ({
           }, 200);
         };
         previewArea.appendChild(iframe);
+      } else {
+        // 開閉のトグル機能
+        detachIframes();
+        inactiveCurrentFrameLinks();
       }
       return;
     }
