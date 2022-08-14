@@ -146,11 +146,18 @@ const LineScrapboxPageLink = ({
     }
   };
 
+  const inactiveCurrentFrameLinks = () => {
+    const activeLinkElem = document.querySelector(".active-frame");
+    if (activeLinkElem) {
+      activeLinkElem.classList.remove("active-frame");
+    }
+  };
+
   const detectCurrentIframe = () => {
     let currentTitle = "";
     const activeLinkElem = document.querySelector(".active-frame");
     if (activeLinkElem) {
-      activeLinkElem.classList.remove("active-frame");
+      // activeLinkElem.classList.remove("active-frame");
       currentTitle = activeLinkElem.innerText;
       // const iframe = document.querySelector(
       //   `iframe[data-title="${currentTitle}"]`
@@ -192,6 +199,7 @@ const LineScrapboxPageLink = ({
         iframe.onload = () => {
           if (iframe.contentWindow.document.title) {
             detachIframes(iframe);
+            inactiveCurrentFrameLinks();
             aElem.classList.add("active-frame");
             iframe.style.display = "block";
           } else {
