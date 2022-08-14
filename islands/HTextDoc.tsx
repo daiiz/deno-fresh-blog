@@ -161,7 +161,10 @@ const LineScrapboxPageLink = ({
       const aElem = e.target;
       const previewArea = document.getElementById(previewAreaId);
       const prevTitle = detectCurrentIframe();
-      if (previewArea && prevTitle !== title) {
+      if (!previewArea) {
+        return;
+      }
+      if (prevTitle !== title) {
         const eTitle = encodeURIComponent(title);
         const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
         const iframe = document.createElement("iframe");
