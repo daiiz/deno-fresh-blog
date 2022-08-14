@@ -123,25 +123,44 @@ const LineScrapboxPageLink = ({
   const encodedTitle = encodeURIComponent(title);
   const scrapboxUrl = `https://scrapbox.io/${projectName}/${encodedTitle}`;
 
+  const detachIframes = (keepFrame) => {
+    const iframes = document.querySelectorAll(`.preview-area iframe`);
+    for (const iframe of iframes) {
+      if (iframe !== keepFrame) {
+        clearInterval(iframeTimer);
+        iframe.remove();
+      }
+    }
+  };
+
+  const inactiveCurrentFrameLinks = (onlyNotFoundFrames = false) => {
+    const selector = ".active-frame, .not-found-frame";
+    const activeLinkElems = document.querySelectorAll(selector);
+    for (const activeLinkElem of activeLinkElems) {
+      if (!onlyNotFoundFrames) {
+        activeLinkElem.classList.remove("active-frame");
+      }
+      activeLinkElem.classList.remove("not-found-frame");
+    }
+  };
+
+  const detectCurrentIframe = () => {
+    let currentTitle = "";
+    const activeLinkElem = document.querySelector(".active-frame");
+    if (activeLinkElem) {
+      currentTitle = activeLinkElem.innerText;
+    }
+    return currentTitle;
+  };
+
   const onClick = async (e: MouseEvent) => {
     if (!e.metaKey && !e.ctrlKey) {
       e.preventDefault();
       console.log("previewAreaId:", previewAreaId);
       // 仮実装
-      const a = e.target;
+      const aElem = e.target;
       const previewArea = document.getElementById(previewAreaId);
-      const activeLinkElems = document.querySelectorAll(".active-frame");
-      let prevTitle = "";
-      for (const elem of activeLinkElems) {
-        elem.classList.remove("active-frame");
-        prevTitle = elem.innerText;
-        const iframe = document.querySelector(
-          `iframe[data-title="${prevTitle}"]`
-        );
-        iframe.remove();
-        document.onmouseover = null;
-        clearInterval(iframeTimer);
-      }
+      const prevTitle = detectCurrentIframe();
       if (previewArea && prevTitle !== title) {
         const eTitle = encodeURIComponent(title);
         const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
@@ -150,31 +169,24 @@ const LineScrapboxPageLink = ({
         iframe.src = url;
         iframe.onload = () => {
           if (iframe.contentWindow.document.title) {
+            detachIframes(iframe);
+            inactiveCurrentFrameLinks();
+            aElem.classList.add("active-frame");
             iframe.style.display = "block";
           } else {
             // Error
-            a.classList.remove("active-frame");
+            inactiveCurrentFrameLinks(true);
+            aElem.classList.remove("active-frame");
+            aElem.classList.add("not-found-frame");
           }
+          clearInterval(iframeTimer);
           iframeTimer = setInterval(() => {
+            // console.log("frame:", title);
             const h = 2 + iframe.contentWindow.document.body.scrollHeight;
             iframe.style.height = `${h}px`;
           }, 200);
         };
-        // document.onmouseover = (e) => {
-        //   console.log(".....!");
-        //   if (e.target.tagName === "IFRAME") {
-        //     document.body.style.background = "transparent";
-        //     e.target.contentWindow.document.body.style.background =
-        //       "rgb(252, 250, 238)";
-        //   } else {
-        //     if (window !== window.parent) {
-        //       document.body.style.background = "rgb(252, 250, 238)";
-        //     }
-        //     iframe.contentWindow.document.body.style.background = "transparent";
-        //   }
-        // };
         previewArea.appendChild(iframe);
-        a.classList.add("active-frame");
       }
       return;
     }
