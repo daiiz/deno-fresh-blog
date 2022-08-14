@@ -134,9 +134,11 @@ const LineScrapboxPageLink = ({
   };
 
   const inactiveCurrentFrameLinks = () => {
-    const activeLinkElem = document.querySelector(".active-frame");
-    if (activeLinkElem) {
+    const selector = ".active-frame, .not-found-frame";
+    const activeLinkElems = document.querySelectorAll(selector);
+    for (const activeLinkElem of activeLinkElems) {
       activeLinkElem.classList.remove("active-frame");
+      activeLinkElem.classList.remove("not-found-frame");
     }
   };
 
@@ -172,6 +174,7 @@ const LineScrapboxPageLink = ({
           } else {
             // Error
             aElem.classList.remove("active-frame");
+            aElem.classList.add("not-found-frame");
           }
           clearInterval(iframeTimer);
           iframeTimer = setInterval(() => {

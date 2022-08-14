@@ -237,3 +237,7 @@ a.active-frame {
   /* background-color: #fcfaee; */
   /* border-radius: 2px; */
 }
+
+a.not-found-frame {
+  border-bottom: 2px dotted #9e9e9e;
+}
