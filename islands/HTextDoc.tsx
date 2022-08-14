@@ -133,11 +133,13 @@ const LineScrapboxPageLink = ({
     }
   };
 
-  const inactiveCurrentFrameLinks = () => {
+  const inactiveCurrentFrameLinks = (onlyNotFoundFrames = false) => {
     const selector = ".active-frame, .not-found-frame";
     const activeLinkElems = document.querySelectorAll(selector);
     for (const activeLinkElem of activeLinkElems) {
-      activeLinkElem.classList.remove("active-frame");
+      if (!onlyNotFoundFrames) {
+        activeLinkElem.classList.remove("active-frame");
+      }
       activeLinkElem.classList.remove("not-found-frame");
     }
   };
@@ -173,6 +175,7 @@ const LineScrapboxPageLink = ({
             iframe.style.display = "block";
           } else {
             // Error
+            inactiveCurrentFrameLinks(true);
             aElem.classList.remove("active-frame");
             aElem.classList.add("not-found-frame");
           }
