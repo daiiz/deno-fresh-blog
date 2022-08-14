@@ -137,7 +137,6 @@ const LineScrapboxPageLink = ({
       if (!previewArea) {
         return;
       }
-      console.log("...!", title === prevTitle);
       if (prevTitle !== title) {
         const eTitle = encodeURIComponent(title);
         const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
@@ -166,7 +165,8 @@ const LineScrapboxPageLink = ({
         previewArea.appendChild(iframe);
       } else {
         // 開閉のトグル機能
-        console.log("...!", title);
+        detachIframes();
+        inactiveCurrentFrameLinks();
       }
       return;
     }
