@@ -1,5 +1,6 @@
 // `[[文字]]`, `[* 文字]`, `[*** 文字]` の記法を解釈する
 export const extractDecorationBold = (chars: string) => {
+  const boldToks = []; // 開始タグ,文字,終了タグの配列
   let boldText = "";
   const i = 0;
   const char = chars[i];
@@ -17,6 +18,7 @@ export const extractDecorationBold = (chars: string) => {
     }
     const subStr = chars.slice(i + skipCount + 1);
     // console.log("skipCount", skipCount, subStr.join(""));
+    const openStr = chars.slice(0, i + skipCount + 1).join("");
     let bracketOpenCountInSubStr = 1;
     for (let j = 0; j < subStr.length; j++) {
       const subChar = subStr[j];
@@ -25,17 +27,14 @@ export const extractDecorationBold = (chars: string) => {
       } else if (subChar === "]") {
         bracketOpenCountInSubStr -= 1;
         if (bracketOpenCountInSubStr === 0) {
-          let sliceIndex = j;
-          if (subStr[j + 1] === "]") {
-            sliceIndex += 1;
-          }
-          boldText =
-            chars.slice(0, i + skipCount + 1).join("") +
-            subStr.slice(0, sliceIndex + 1).join("");
+          const closeStr = subStr[j + 1] === "]" ? "]]" : "]";
+          boldToks.push(openStr);
+          boldToks.push(subStr.slice(0, j).join(""));
+          boldToks.push(closeStr);
           break;
         }
       }
     } // end of loop for subStr
   }
-  return boldText;
+  return boldToks;
 };
