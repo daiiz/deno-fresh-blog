@@ -8,7 +8,7 @@ import {
   getGyazoThumbnailUrl,
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
-import { parseDecorationBold } from "../islands-lib/deco.ts";
+import { extractDecorationBold } from "../islands-lib/deco.ts";
 import {
   LineProps,
   LineCharProps,
@@ -292,7 +292,8 @@ export const Line = ({
       const subStr = chars.slice(idx).join("").split("]")[0] + "]";
       // 太文字の対応
       if (chars[idx + 1] === "[" || chars[idx + 1] === "*") {
-        parseDecorationBold(chars.slice(idx));
+        const boldStr = extractDecorationBold(chars.slice(idx));
+        console.log("!##", boldStr);
         // console.log("##", chars);
         // idx += subStr.length - 1;
         // continue;
