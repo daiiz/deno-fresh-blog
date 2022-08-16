@@ -292,8 +292,8 @@ export const Line = ({
       const subStr = chars.slice(idx).join("").split("]")[0] + "]";
       // 太文字の対応
       if (chars[idx + 1] === "[" || chars[idx + 1] === "*") {
-        const boldStr = extractDecorationBold(chars.slice(idx));
-        console.log("!##", boldStr);
+        const boldTokens = extractDecorationBold(chars.slice(idx));
+        console.log("!##", boldTokens);
         // console.log("##", chars);
         // idx += subStr.length - 1;
         // continue;
