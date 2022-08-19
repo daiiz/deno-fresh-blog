@@ -7,6 +7,7 @@ import {
   isGyazoBraketing,
   getGyazoThumbnailUrl,
   parseLinkLikeBracketing,
+  parseIconTitle,
 } from "@islands-lib/bracketing.ts";
 import { extractDecorationBold } from "../islands-lib/deco.ts";
 import {
@@ -46,21 +47,28 @@ const ScrapboxLineContent = ({
 const LineScrapboxPageIcon = ({
   projectName,
   title,
+  iconSize,
 }: {
   projectName: string;
   title: string;
+  iconSize: number;
 }) => {
   const [error, setError] = useState(false);
   const encodeTitle = encodeURIComponent(title);
   const iconUrl = `https://scrapbox.io/api/pages/${projectName}/${encodeTitle}/icon`;
   const iconNotationElems = [];
-  for (const [idx, char] of `[${encodeTitle}.icon]`.split("").entries()) {
+  const iconNotation =
+    iconSize > 0
+      ? `[${encodeTitle}.icon*${iconSize}]`
+      : `[${encodeTitle}.icon]`;
+  for (const [idx, char] of iconNotation.split("").entries()) {
     iconNotationElems.push(
       <span key={idx} class="icon-notation-char">
         {char}
       </span>
     );
   }
+  // TODO
   return (
     <Fragment>
       <span class="image-notation icon-notation">{iconNotationElems}</span>
@@ -85,6 +93,7 @@ const LineScrapboxPageLink = ({
   projectName,
   title,
   isIcon,
+  iconSize,
   previewAreaId,
 }: LineScrapboxPageLinkProps) => {
   if (!projectName || !title) {
@@ -92,7 +101,13 @@ const LineScrapboxPageLink = ({
   }
 
   if (isIcon) {
-    return <LineScrapboxPageIcon projectName={projectName} title={title} />;
+    return (
+      <LineScrapboxPageIcon
+        projectName={projectName}
+        title={title}
+        iconSize={iconSize}
+      />
+    );
   }
 
   const encodedTitle = encodeURIComponent(title);
@@ -409,10 +424,11 @@ export const Line = ({
         continue;
       } else {
         if (projectName && linkLikeRes.title) {
-          const isIcon = linkLikeRes.title.endsWith(".icon");
-          const pageTitle = isIcon
-            ? linkLikeRes.title.slice(0, -5)
-            : linkLikeRes.title;
+          const [isIcon, iconTitle, iconSize] = parseIconTitle(
+            linkLikeRes.title
+          );
+          // const isIcon = linkLikeRes.title.endsWith(".icon");
+          const pageTitle = isIcon ? iconTitle : linkLikeRes.title;
           // Scrapbox bracketing
           if (!isIcon) {
             charElems.push(
@@ -424,6 +440,7 @@ export const Line = ({
               projectName={projectName}
               title={pageTitle}
               isIcon={isIcon}
+              iconSize={iconSize}
               key={idx + "_" + linkLikeRes.title}
               previewAreaId={previewAreaId}
             />

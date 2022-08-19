@@ -19,6 +19,18 @@ export const getGyazoThumbnailUrl = (bracketingText: string): string => {
   return `https://gyazo.com/${gyazoId}/max_size/1000`;
 };
 
+export const parseIconTitle = (text) => {
+  if (text.endsWith(".icon")) {
+    return [true, text.slice(0, -5), 1];
+  }
+  const iconTowerPattern = /\.icon\*\d+$/;
+  if (iconTowerPattern.test(text)) {
+    const iconSize = text.match(/\.icon\*(\d+)$/)[1];
+    return [true, text.replace(iconTowerPattern, ""), +iconSize];
+  }
+  return [false, "", 0];
+};
+
 export const parseLinkLikeBracketing = (bracketingText: string) => {
   const text = bracketingText.replace(/[\[\]]/g, "");
   if (text.startsWith("/")) {

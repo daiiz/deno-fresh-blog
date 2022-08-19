@@ -28,6 +28,7 @@ export type LineScrapboxPageLinkProps = {
   projectName: string;
   title: string;
   isIcon: boolean;
+  iconSize: number;
   previewAreaId: string;
 };
 
