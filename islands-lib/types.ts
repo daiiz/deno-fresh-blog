@@ -8,6 +8,7 @@ export type LineProps = {
 
 export type LineCharProps = {
   char: string;
+  decoType?: string;
   isJsonView?: boolean;
 };
 

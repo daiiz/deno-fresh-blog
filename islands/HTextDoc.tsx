@@ -226,10 +226,10 @@ const LineDeco = ({ text, decoType }: LineDecoProps) => {
   );
 };
 
-const LineChar = ({ char, isJsonView }: LineCharProps) => {
+const LineChar = ({ char, decoType, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
-  const isBoldBracket = char === "[[" || char === "]]" || /\[\*+\s/.test(char);
-  if (char === "[" || char === "]" || isBoldBracket) {
+  const isDeco = ["bold"].includes(decoType);
+  if (char === "[" || char === "]" || isDeco) {
     classNames.push("bracket");
   } else if (char === ">") {
     classNames.push("quote");
@@ -237,9 +237,13 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
     classNames.push("tab");
   }
 
+  if (decoType && !isJsonView) {
+    classNames.push("deco");
+  }
+
   // XXX: 雑
   if (isJsonView) {
-    if (["[", "]", "{", "}", '"', ","].includes(char)) {
+    if (!isDeco && ["[", "]", "{", "}", '"', ","].includes(char)) {
       classNames.push("json-mark");
     }
   }
@@ -309,11 +313,21 @@ export const Line = ({
         if (boldTokens.length === 3) {
           const [bHead, bBody, bTail] = boldTokens;
           charElems.push(
-            <LineChar char={bHead} key={idx + "_["} isJsonView={isJsonView} />
+            <LineChar
+              char={bHead}
+              key={idx + "_["}
+              decoType="bold"
+              isJsonView={isJsonView}
+            />
           );
           charElems.push(<LineDeco text={bBody} decoType="bold" />);
           charElems.push(
-            <LineChar char={bTail} key={idx + "_]"} isJsonView={isJsonView} />
+            <LineChar
+              char={bTail}
+              key={idx + "_]"}
+              decoType="bold"
+              isJsonView={isJsonView}
+            />
           );
           idx += boldTokens.reduce((acc, cur) => acc + cur.length, 0) - 1;
           continue;
