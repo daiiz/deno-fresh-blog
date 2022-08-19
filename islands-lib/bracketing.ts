@@ -50,7 +50,7 @@ export const parseLinkLikeBracketing = (bracketingText: string) => {
       if (isImageUrl(tok)) {
         imageUrl = tok;
       } else if (isGyazoUrl(tok)) {
-        imageUrl = tok;
+        imageUrl = tok.replace(/\/raw$/, "");
         thumbnailUrl = getGyazoThumbnailUrl(`[${tok}]`);
       } else {
         url = tok;
