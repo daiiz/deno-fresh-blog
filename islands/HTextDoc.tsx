@@ -216,7 +216,8 @@ const LineLink = ({ title, url, imageUrl, isExternal }: LineLinkProps) => {
 
 const LineChar = ({ char, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
-  if (char === "[" || char === "]") {
+  const isBoldBracket = char === "[[" || char === "]]" || /\[\*+\s/.test(char);
+  if (char === "[" || char === "]" || isBoldBracket) {
     classNames.push("bracket");
   } else if (char === ">") {
     classNames.push("quote");
@@ -295,6 +296,13 @@ export const Line = ({
         const boldTokens = extractDecorationBold(chars.slice(idx));
         if (boldTokens.length === 3) {
           console.log("!##", boldTokens);
+          const [bHead, bBody, bTail] = boldTokens;
+          charElems.push(
+            <LineChar char={bHead} key={idx + "_["} isJsonView={isJsonView} />
+          );
+          charElems.push(
+            <LineChar char={bTail} key={idx + "_]"} isJsonView={isJsonView} />
+          );
           idx += boldTokens.reduce((acc, cur) => acc + cur.length, 0) - 1;
           continue;
         }
