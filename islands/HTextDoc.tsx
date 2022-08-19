@@ -423,7 +423,7 @@ export const Line = ({
         continue;
       }
 
-      if (linkLikeRes.url && !linkLikeRes.isExternalScrapboxLinkNotation) {
+      if (linkLikeRes.url && !linkLikeRes.isExternalScrapboxPage) {
         console.log(linkLikeRes);
         charElems.push(
           <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
@@ -458,7 +458,7 @@ export const Line = ({
             <LineScrapboxPageLink
               projectName={projectName}
               title={pageTitle}
-              isExternalScrapbox={linkLikeRes.isExternalScrapboxLinkNotation}
+              isExternalScrapbox={linkLikeRes.isExternalScrapboxPage}
               isIcon={isIcon}
               iconSize={iconSize}
               key={idx + "_" + linkLikeRes.title}
