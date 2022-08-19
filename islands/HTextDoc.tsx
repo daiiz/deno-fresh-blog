@@ -58,7 +58,7 @@ const LineScrapboxPageIcon = ({
   const iconUrl = `https://scrapbox.io/api/pages/${projectName}/${encodeTitle}/icon`;
   const iconNotationElems = [];
   const iconNotation =
-    iconSize > 0
+    iconSize > 1
       ? `[${encodeTitle}.icon*${iconSize}]`
       : `[${encodeTitle}.icon]`;
   for (const [idx, char] of iconNotation.split("").entries()) {
@@ -68,19 +68,27 @@ const LineScrapboxPageIcon = ({
       </span>
     );
   }
-  // TODO
+
+  const iconImgElems = [];
+  for (let i = 0; i < Math.min(iconSize, 10); i++) {
+    iconImgElems.push(
+      <img
+        key={`icon_${title}_${i}`}
+        src={iconUrl}
+        class="doc-scrapbox-icon"
+        onError={() => {
+          setError(true);
+        }}
+      />
+    );
+  }
+
   return (
     <Fragment>
       <span class="image-notation icon-notation">{iconNotationElems}</span>
       <span class="doc-icon-container">
         {!error ? (
-          <img
-            src={iconUrl}
-            class="doc-scrapbox-icon"
-            onError={() => {
-              setError(true);
-            }}
-          />
+          iconImgElems
         ) : (
           <span class="doc-scrapbox-icon-label">({encodeTitle})</span>
         )}
