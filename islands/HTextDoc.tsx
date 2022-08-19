@@ -8,10 +8,12 @@ import {
   getGyazoThumbnailUrl,
   parseLinkLikeBracketing,
 } from "@islands-lib/bracketing.ts";
+import { extractDecorationBold } from "../islands-lib/deco.ts";
 import {
   LineProps,
   LineCharProps,
   LineLinkProps,
+  LineDecoProps,
   LineScrapboxPageLinkProps,
   ScrapboxLineContentProps,
 } from "@islands-lib/types.ts";
@@ -213,9 +215,21 @@ const LineLink = ({ title, url, imageUrl, isExternal }: LineLinkProps) => {
   );
 };
 
-const LineChar = ({ char, isJsonView }: LineCharProps) => {
+const LineDeco = ({ text, decoType }: LineDecoProps) => {
+  if (!["bold"].includes(decoType)) {
+    return text;
+  }
+  return (
+    <span class="doc-deco-container">
+      <span class={`doc-deco ${decoType}`}>{text}</span>
+    </span>
+  );
+};
+
+const LineChar = ({ char, decoType, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
-  if (char === "[" || char === "]") {
+  const isDeco = ["bold"].includes(decoType);
+  if (char === "[" || char === "]" || isDeco) {
     classNames.push("bracket");
   } else if (char === ">") {
     classNames.push("quote");
@@ -223,9 +237,13 @@ const LineChar = ({ char, isJsonView }: LineCharProps) => {
     classNames.push("tab");
   }
 
+  if (decoType && !isJsonView) {
+    classNames.push("deco");
+  }
+
   // XXX: 雑
   if (isJsonView) {
-    if (["[", "]", "{", "}", '"', ","].includes(char)) {
+    if (!isDeco && ["[", "]", "{", "}", '"', ","].includes(char)) {
       classNames.push("json-mark");
     }
   }
@@ -287,8 +305,34 @@ export const Line = ({
   for (let idx = spaceLen; idx < chars.length; idx++) {
     const char = chars[idx];
     // ブラケティングされている箇所の対応
-    if (char === "[" && chars[idx + 1] !== "[") {
+    if (char === "[") {
       const subStr = chars.slice(idx).join("").split("]")[0] + "]";
+      // 太文字の対応
+      if (chars[idx + 1] === "[" || chars[idx + 1] === "*") {
+        const boldTokens = extractDecorationBold(chars.slice(idx));
+        if (boldTokens.length === 3) {
+          const [bHead, bBody, bTail] = boldTokens;
+          charElems.push(
+            <LineChar
+              char={bHead}
+              key={idx + "_["}
+              decoType="bold"
+              isJsonView={isJsonView}
+            />
+          );
+          charElems.push(<LineDeco text={bBody} decoType="bold" />);
+          charElems.push(
+            <LineChar
+              char={bTail}
+              key={idx + "_]"}
+              decoType="bold"
+              isJsonView={isJsonView}
+            />
+          );
+          idx += boldTokens.reduce((acc, cur) => acc + cur.length, 0) - 1;
+          continue;
+        }
+      }
       // Gyazo画像の埋め込み
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);

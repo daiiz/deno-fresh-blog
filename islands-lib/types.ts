@@ -8,6 +8,7 @@ export type LineProps = {
 
 export type LineCharProps = {
   char: string;
+  decoType?: string;
   isJsonView?: boolean;
 };
 
@@ -16,6 +17,11 @@ export type LineLinkProps = {
   url: string;
   imageUrl: string;
   isExternal: boolean;
+};
+
+export type LineDecoProps = {
+  text: string;
+  decoType: string;
 };
 
 export type LineScrapboxPageLinkProps = {
