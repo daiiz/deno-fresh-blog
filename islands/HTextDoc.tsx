@@ -293,10 +293,11 @@ export const Line = ({
       // 太文字の対応
       if (chars[idx + 1] === "[" || chars[idx + 1] === "*") {
         const boldTokens = extractDecorationBold(chars.slice(idx));
-        console.log("!##", boldTokens);
-        // console.log("##", chars);
-        // idx += subStr.length - 1;
-        // continue;
+        if (boldTokens.length === 3) {
+          console.log("!##", boldTokens);
+          idx += boldTokens.reduce((acc, cur) => acc + cur.length, 0) - 1;
+          continue;
+        }
       }
       // Gyazo画像の埋め込み
       if (isGyazoBraketing(subStr)) {
