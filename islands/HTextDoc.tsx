@@ -100,10 +100,22 @@ const LineScrapboxPageIcon = ({
 const LineScrapboxPageLink = ({
   projectName,
   title,
+  isExternalScrapbox,
   isIcon,
   iconSize,
   previewAreaId,
+  isJsonView,
 }: LineScrapboxPageLinkProps) => {
+  let anchorTitle = title;
+
+  // 外部Scrapboxを参照するリンク記法の場合の特別対応
+  if (isExternalScrapbox) {
+    const titleToks = title.split("/");
+    titleToks.shift(); // empty string
+    projectName = titleToks.shift();
+    title = titleToks.join("/");
+  }
+
   if (!projectName || !title) {
     return title;
   }
@@ -152,7 +164,7 @@ const LineScrapboxPageLink = ({
   };
 
   const onClick = async (e: MouseEvent) => {
-    if (!e.metaKey && !e.ctrlKey) {
+    if (!isJsonView && !e.metaKey && !e.ctrlKey) {
       e.preventDefault();
       console.log("previewAreaId:", previewAreaId);
       // 仮実装
@@ -162,7 +174,7 @@ const LineScrapboxPageLink = ({
       if (!previewArea) {
         return;
       }
-      if (prevTitle !== title) {
+      if (prevTitle !== anchorTitle) {
         const eTitle = encodeURIComponent(title);
         const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
         const iframe = document.createElement("iframe");
@@ -206,7 +218,7 @@ const LineScrapboxPageLink = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        {title}
+        {anchorTitle}
       </a>
     </span>
   );
@@ -412,7 +424,8 @@ export const Line = ({
         continue;
       }
 
-      if (linkLikeRes.url) {
+      if (linkLikeRes.url && !linkLikeRes.isExternalScrapboxPage) {
+        console.log(linkLikeRes);
         charElems.push(
           <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
         );
@@ -446,10 +459,12 @@ export const Line = ({
             <LineScrapboxPageLink
               projectName={projectName}
               title={pageTitle}
+              isExternalScrapbox={linkLikeRes.isExternalScrapboxPage}
               isIcon={isIcon}
               iconSize={iconSize}
               key={idx + "_" + linkLikeRes.title}
               previewAreaId={previewAreaId}
+              isJsonView={isJsonView}
             />
           );
           if (!isIcon) {
