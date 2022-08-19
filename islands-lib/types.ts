@@ -18,6 +18,11 @@ export type LineLinkProps = {
   isExternal: boolean;
 };
 
+export type LineDecoProps = {
+  text: string;
+  decoType: string;
+};
+
 export type LineScrapboxPageLinkProps = {
   projectName: string;
   title: string;

@@ -13,6 +13,7 @@ import {
   LineProps,
   LineCharProps,
   LineLinkProps,
+  LineDecoProps,
   LineScrapboxPageLinkProps,
   ScrapboxLineContentProps,
 } from "@islands-lib/types.ts";
@@ -214,6 +215,17 @@ const LineLink = ({ title, url, imageUrl, isExternal }: LineLinkProps) => {
   );
 };
 
+const LineDeco = ({ text, decoType }: LineDecoProps) => {
+  if (!["bold"].includes(decoType)) {
+    return text;
+  }
+  return (
+    <span class="doc-deco-container">
+      <span class={`doc-deco ${decoType}`}>{text}</span>
+    </span>
+  );
+};
+
 const LineChar = ({ char, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
   const isBoldBracket = char === "[[" || char === "]]" || /\[\*+\s/.test(char);
@@ -295,11 +307,11 @@ export const Line = ({
       if (chars[idx + 1] === "[" || chars[idx + 1] === "*") {
         const boldTokens = extractDecorationBold(chars.slice(idx));
         if (boldTokens.length === 3) {
-          console.log("!##", boldTokens);
           const [bHead, bBody, bTail] = boldTokens;
           charElems.push(
             <LineChar char={bHead} key={idx + "_["} isJsonView={isJsonView} />
           );
+          charElems.push(<LineDeco text={bBody} decoType="bold" />);
           charElems.push(
             <LineChar char={bTail} key={idx + "_]"} isJsonView={isJsonView} />
           );
