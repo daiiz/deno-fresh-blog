@@ -104,6 +104,7 @@ const LineScrapboxPageLink = ({
   isIcon,
   iconSize,
   previewAreaId,
+  isJsonView,
 }: LineScrapboxPageLinkProps) => {
   let anchorTitle = title;
 
@@ -163,7 +164,7 @@ const LineScrapboxPageLink = ({
   };
 
   const onClick = async (e: MouseEvent) => {
-    if (!e.metaKey && !e.ctrlKey) {
+    if (!isJsonView && !e.metaKey && !e.ctrlKey) {
       e.preventDefault();
       console.log("previewAreaId:", previewAreaId);
       // 仮実装
@@ -463,6 +464,7 @@ export const Line = ({
               iconSize={iconSize}
               key={idx + "_" + linkLikeRes.title}
               previewAreaId={previewAreaId}
+              isJsonView={isJsonView}
             />
           );
           if (!isIcon) {

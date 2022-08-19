@@ -30,6 +30,7 @@ export type LineScrapboxPageLinkProps = {
   isIcon: boolean;
   iconSize: number;
   previewAreaId: string;
+  isJsonView: boolean;
 };
 
 export type ScrapboxLineContentProps = {
