@@ -435,7 +435,6 @@ export const Line = ({
           const [isIcon, iconTitle, iconSize] = parseIconTitle(
             linkLikeRes.title
           );
-          // const isIcon = linkLikeRes.title.endsWith(".icon");
           const pageTitle = isIcon ? iconTitle : linkLikeRes.title;
           // Scrapbox bracketing
           if (!isIcon) {
