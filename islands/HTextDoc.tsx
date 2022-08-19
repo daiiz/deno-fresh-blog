@@ -100,10 +100,21 @@ const LineScrapboxPageIcon = ({
 const LineScrapboxPageLink = ({
   projectName,
   title,
+  isExternalScrapbox,
   isIcon,
   iconSize,
   previewAreaId,
 }: LineScrapboxPageLinkProps) => {
+  let anchorTitle = title;
+
+  // 外部Scrapboxを参照するリンク記法の場合の特別対応
+  if (isExternalScrapbox) {
+    const titleToks = title.split("/");
+    titleToks.shift(); // empty string
+    projectName = titleToks.shift();
+    title = titleToks.join("/");
+  }
+
   if (!projectName || !title) {
     return title;
   }
@@ -162,7 +173,7 @@ const LineScrapboxPageLink = ({
       if (!previewArea) {
         return;
       }
-      if (prevTitle !== title) {
+      if (prevTitle !== anchorTitle) {
         const eTitle = encodeURIComponent(title);
         const url = `/docs/htext/${eTitle}?project=${projectName}&mode=frame`;
         const iframe = document.createElement("iframe");
@@ -206,7 +217,7 @@ const LineScrapboxPageLink = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        {title}
+        {anchorTitle}
       </a>
     </span>
   );
@@ -412,7 +423,8 @@ export const Line = ({
         continue;
       }
 
-      if (linkLikeRes.url) {
+      if (linkLikeRes.url && !linkLikeRes.isExternalScrapboxLinkNotation) {
+        console.log(linkLikeRes);
         charElems.push(
           <LineChar char="[" key={idx + "_["} isJsonView={isJsonView} />
         );
@@ -446,6 +458,7 @@ export const Line = ({
             <LineScrapboxPageLink
               projectName={projectName}
               title={pageTitle}
+              isExternalScrapbox={linkLikeRes.isExternalScrapboxLinkNotation}
               isIcon={isIcon}
               iconSize={iconSize}
               key={idx + "_" + linkLikeRes.title}

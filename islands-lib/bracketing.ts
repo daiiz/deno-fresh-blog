@@ -38,6 +38,7 @@ export const parseLinkLikeBracketing = (bracketingText: string) => {
       title: text,
       imageUrl: "",
       url: `https://scrapbox.io/${text.substring(1)}`,
+      isExternalScrapboxLinkNotation: true,
     };
   }
   const toks = text.split(" ");
@@ -64,5 +65,6 @@ export const parseLinkLikeBracketing = (bracketingText: string) => {
     imageUrl,
     thumbnailUrl,
     url,
+    isExternalScrapboxLinkNotation: false,
   };
 };
