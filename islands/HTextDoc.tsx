@@ -289,6 +289,7 @@ export const Line = ({
   text,
   isTitle,
   isJsonView,
+  isFrameMode,
   projectName,
   previewAreaId,
 }: LineProps) => {
@@ -372,9 +373,10 @@ export const Line = ({
       if (isGyazoBraketing(subStr)) {
         const srcUrl = getGyazoThumbnailUrl(subStr);
         const linkLikeRes = parseLinkLikeBracketing(subStr);
+        const imgLoading = isFrameMode ? "eager" : "lazy";
         charElems.push(
           <span class="image-container">
-            <img loading="lazy" class="image" src={srcUrl} />
+            <img loading={imgLoading} class="image" src={srcUrl} />
             <span class="image-notation">
               <LineChar char="[" isJsonView={isJsonView} />
               <LineLink
@@ -578,6 +580,7 @@ export default function HTextDoc({
         key={idx}
         isTitle={idx === 0}
         isJsonView={false}
+        isFrameMode={mode === "frame"}
         projectName={projectName}
         previewAreaId={previewAreaId}
       />
