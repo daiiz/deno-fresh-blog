@@ -9,7 +9,11 @@ import {
   parseLinkLikeBracketing,
   parseIconTitle,
 } from "@islands-lib/bracketing.ts";
-import { extractDecorationBold } from "../islands-lib/deco.ts";
+import {
+  extractDecoration,
+  detectDecoType,
+  supportedDecoTypes,
+} from "../islands-lib/deco.ts";
 import {
   LineProps,
   LineCharProps,
@@ -251,7 +255,7 @@ const LineLink = ({ title, url, imageUrl, isExternal }: LineLinkProps) => {
 };
 
 const LineDeco = ({ text, decoType }: LineDecoProps) => {
-  if (!["bold"].includes(decoType)) {
+  if (!supportedDecoTypes.includes(decoType)) {
     return text;
   }
   return (
@@ -263,7 +267,7 @@ const LineDeco = ({ text, decoType }: LineDecoProps) => {
 
 const LineChar = ({ char, decoType, isJsonView }: LineCharProps) => {
   const classNames = ["char"];
-  const isDeco = ["bold"].includes(decoType);
+  const isDeco = supportedDecoTypes.includes(decoType);
   if (char === "[" || char === "]" || isDeco) {
     classNames.push("bracket");
   } else if (char === ">") {
@@ -343,29 +347,32 @@ export const Line = ({
     // ブラケティングされている箇所の対応
     if (char === "[") {
       const subStr = chars.slice(idx).join("").split("]")[0] + "]";
-      // 太文字の対応
-      if (chars[idx + 1] === "[" || chars[idx + 1] === "*") {
-        const boldTokens = extractDecorationBold(chars.slice(idx));
-        if (boldTokens.length === 3) {
-          const [bHead, bBody, bTail] = boldTokens;
+      // 太文字と斜体の対応
+      const nextChar = chars[idx + 1];
+      if (nextChar === "[" || nextChar === "*" || nextChar === "/") {
+        const decoType = detectDecoType(nextChar);
+        const decoTokens = extractDecoration(chars.slice(idx), decoType);
+        console.log(decoTokens);
+        if (decoTokens.length === 3) {
+          const [dHead, dBody, dTail] = decoTokens;
           charElems.push(
             <LineChar
-              char={bHead}
+              char={dHead}
               key={idx + "_["}
-              decoType="bold"
+              decoType={decoType}
               isJsonView={isJsonView}
             />
           );
-          charElems.push(<LineDeco text={bBody} decoType="bold" />);
+          charElems.push(<LineDeco text={dBody} decoType={decoType} />);
           charElems.push(
             <LineChar
-              char={bTail}
+              char={dTail}
               key={idx + "_]"}
-              decoType="bold"
+              decoType={decoType}
               isJsonView={isJsonView}
             />
           );
-          idx += boldTokens.reduce((acc, cur) => acc + cur.length, 0) - 1;
+          idx += decoTokens.reduce((acc, cur) => acc + cur.length, 0) - 1;
           continue;
         }
       }
