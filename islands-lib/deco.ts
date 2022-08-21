@@ -1,5 +1,26 @@
-// `[[文字]]`, `[* 文字]`, `[*** 文字]` の記法を解釈する
-export const extractDecorationBold = (chars: string) => {
+const decoMarks = Object.freeze({
+  bold: "*",
+  italic: "/",
+});
+
+export const supportedDecoTypes = Object.keys(decoMarks);
+
+export const detectDecoType = (nextChar: string): string => {
+  if (nextChar === "*" || nextChar === "[") {
+    return "bold";
+  }
+  if (nextChar === "/") {
+    return "italic";
+  }
+  return "";
+};
+
+// `[[文字]]`, `[* 文字]`, `[*** 文字]`, `[/ 文字]` の記法を解釈する
+export const extractDecoration = (chars: string, decoType: string) => {
+  if (!decoMarks[decoType]) {
+    console.error(`invalid decoration type: ${decoType}`);
+    return [];
+  }
   const boldToks = []; // 開始タグ,文字,終了タグの配列
   let boldText = "";
   const i = 0;
@@ -7,14 +28,19 @@ export const extractDecorationBold = (chars: string) => {
   if (char === "[") {
     let skipCount = 0;
     if (chars[i + 1] === "[") {
-      // 太字記法の開始
+      // 装飾記法の開始
       skipCount = 1;
-    } else if (chars[i + 1] === "*") {
-      // 太字記法の開始
-      skipCount = chars
-        .slice(1)
-        .join("")
-        .match(/^[\*\s]+/)[0].length;
+    } else if (chars[i + 1] === decoMarks[decoType]) {
+      // 装飾記法の開始
+      try {
+        skipCount = chars
+          .slice(1)
+          .join("")
+          .match(/^[\*\/]+\s+/)[0].length;
+      } catch (err) {
+        // 外部スクボを参照するための冒頭のスラッシュであるなど、装飾記法ではない
+        return [];
+      }
     }
     const subStr = chars.slice(i + skipCount + 1);
     // console.log("skipCount", skipCount, subStr.join(""));
