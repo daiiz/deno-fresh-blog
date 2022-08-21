@@ -1,6 +1,7 @@
 /** @jsx h */
 import { h } from "preact";
 import { tw } from "@twind";
+import DailyArticleList from "../islands/DailyArticleList.tsx";
 
 const HomeDescriptions = () => {
   return (
@@ -27,7 +28,9 @@ export default function Home() {
           <h1 class={tw`text-2xl mt-10`}>だいず書庫</h1>
           <HomeDescriptions />
         </div>
-        <div class="daily-container"></div>
+        <div class="daily-container">
+          <DailyArticleList />
+        </div>
       </div>
     </div>
   );
