@@ -4,6 +4,7 @@ export type LineProps = {
   previewAreaId: string;
   isTitle?: boolean;
   isJsonView?: boolean;
+  isFrameMode?: boolean;
 };
 
 export type LineCharProps = {
