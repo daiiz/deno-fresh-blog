@@ -352,7 +352,6 @@ export const Line = ({
       if (nextChar === "[" || nextChar === "*" || nextChar === "/") {
         const decoType = detectDecoType(nextChar);
         const decoTokens = extractDecoration(chars.slice(idx), decoType);
-        console.log(decoTokens);
         if (decoTokens.length === 3) {
           const [dHead, dBody, dTail] = decoTokens;
           charElems.push(
