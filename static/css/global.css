@@ -27,6 +27,10 @@
   color: #333;
 }
 
+.doc-deco.italic {
+  font-style: italic;
+}
+
 .pre {
   max-width: 50em;
   margin: 1em auto;
