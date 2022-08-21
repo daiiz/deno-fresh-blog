@@ -13,7 +13,8 @@ import * as $7 from "./routes/docs/json/[docId].tsx";
 import * as $8 from "./routes/docs/pdf/[docId].tsx";
 import * as $9 from "./routes/docs/text/[docId].tsx";
 import * as $10 from "./routes/feed/all.ts";
-import * as $11 from "./routes/index.tsx";
+import * as $11 from "./routes/home.tsx";
+import * as $12 from "./routes/index.tsx";
 import * as $$0 from "./islands/Article.tsx";
 import * as $$1 from "./islands/Counter.tsx";
 import * as $$2 from "./islands/HJsonDoc.tsx";
@@ -38,7 +39,8 @@ const manifest = {
     "./routes/docs/pdf/[docId].tsx": $8,
     "./routes/docs/text/[docId].tsx": $9,
     "./routes/feed/all.ts": $10,
-    "./routes/index.tsx": $11,
+    "./routes/home.tsx": $11,
+    "./routes/index.tsx": $12,
   },
   islands: {
     "./islands/Article.tsx": $$0,

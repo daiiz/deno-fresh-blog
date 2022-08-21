@@ -3,7 +3,7 @@ import { h } from "preact";
 import { tw } from "@twind";
 import RecentArticles, { LiItem } from "../islands/RecentArticles.tsx";
 
-export default function Home() {
+export default function Index() {
   return (
     <div>
       <link rel="stylesheet" href="/css/global.css" />

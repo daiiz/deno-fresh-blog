@@ -4,4 +4,4 @@ Disallow: /docs/json/
 Disallow: /docs/pdf/
 Disallow: /articles/
 Disallow: /api/
-
+Disallow: /home/
